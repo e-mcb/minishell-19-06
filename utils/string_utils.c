@@ -6,13 +6,13 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:30:41 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/18 22:10:15 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/15 11:12:54 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_substrword(char *str, int start, int end, t_shell *shell)
+char	*ft_substrword(char *str, int start, int end)
 {
 	char	*word;
 	int		i;
@@ -20,7 +20,7 @@ char	*ft_substrword(char *str, int start, int end, t_shell *shell)
 	i = 0;
 	word = malloc(sizeof(char) * (end - start + 1));
 	if (!word)
-		ft_clean_exit(NULL, shell, NULL, NULL);
+		return (NULL);
 	while (start < end)
 	{
 		word[i] = str[start];
@@ -31,7 +31,7 @@ char	*ft_substrword(char *str, int start, int end, t_shell *shell)
 	return (word);
 }
 
-char	*trim_quotes(char *str, t_shell *shell)
+char	*trim_quotes(char *str)
 {
 	int		start;
 	int		end;
@@ -45,7 +45,7 @@ char	*trim_quotes(char *str, t_shell *shell)
 		end--;
 	trimmed = malloc(end - start + 2);
 	if (!trimmed)
-		ft_clean_exit(NULL, shell, NULL, NULL);
+		return (NULL);
 	ft_strlcpy(trimmed, &str[start], end - start + 2);
 	return (trimmed);
 }
@@ -60,7 +60,7 @@ static int	ft_strsize(char **str)
 	return (i);
 }
 
-char	**ft_strdup_array(char **src, t_shell *shell)
+char	**ft_strdup_array(char **src)
 {
 	int		size;
 	int		i;
@@ -69,7 +69,7 @@ char	**ft_strdup_array(char **src, t_shell *shell)
 	size = ft_strsize(src);
 	dst = malloc(sizeof(char *) * (size + 1));
 	if (!dst)
-		ft_clean_exit(NULL, shell, NULL, NULL);
+		return (NULL);
 	i = 0;
 	while (i < size)
 	{
@@ -87,13 +87,13 @@ char	**ft_strdup_array(char **src, t_shell *shell)
 	return (dst);
 }
 
-char	*strndup_custom(const char *s, size_t n, t_shell *shell)
+char	*strndup_custom(const char *s, size_t n)
 {
 	char	*res;
 
 	res = malloc(n + 1);
 	if (!res)
-		ft_clean_exit(NULL, shell, NULL, NULL);
+		return (NULL);
 	ft_strncpy(res, s, n);
 	res[n] = '\0';
 	return (res);

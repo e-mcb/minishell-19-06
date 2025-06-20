@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:31:47 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/18 23:37:07 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/21 00:57:21 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,17 @@ typedef struct s_envvar
 	struct s_envvar	*next;
 }	t_envvar;
 
+typedef struct s_exec
+{
+	char	**arr;
+	int		fd_in;
+	int		fd_out;
+	char	*heredoc;
+	bool	heredoc_bool;
+	t_exec	*next;
+	int		pid;
+}	t_exec;
+
 typedef struct s_shell
 {
 	char		**env_arr;
@@ -89,6 +100,7 @@ typedef struct s_shell
 	t_token		*token;
 	char		**splitted;
 	int			exit_status;
+	t_exec		*exec;
 }	t_shell;
 
 typedef struct s_expand
@@ -126,7 +138,7 @@ int			count_strings(char **arr);
 void		ft_init_var(size_t *i, size_t *count, bool *in_quotes, char *c);
 void		whitespace_to_space(char *str);
 int			ft_strcmp(char *s1, char *s2);
-char		*ft_strndup(const char *s, size_t n, t_shell *shell);
+char		*ft_strndup(const char *s, size_t n);
 
 //misc utils
 void		*ft_realloc(void *ptr, int old_size, int new_size);
@@ -159,10 +171,21 @@ int			add_token(t_shell *shell, char *str, t_token_type type, int rank);
 //utils de test
 void		ft_print_array(char **str);
 
+//builtins
+void		ft_export(char **str, t_shell *shell, int in_pipeline);
+void		ft_cd(char **str, t_shell *shell);
+int			ft_echo(char **str, t_shell *shell);
+void		ft_env(char **str, t_shell *shell);
+int			ft_exit(char **arr, t_shell *shell);
+void		ft_pwd(char **str, t_shell *shell);
+void		ft_unset(char **str, t_shell *shell, int in_pipeline);
+
 //clean exit
 void		ft_free_str_array(char **arr);
+
 void		free_list(t_token **head);
-void		ft_clean_exit(char *input, t_shell *shell, char *str_to_free, char **arr_to_free);
+void		ft_clean_exit(char *input, t_shell *shell,
+				char *str_to_free, char **arr_to_free);
 
 //expand
 void		expand(t_shell *shell);
@@ -174,6 +197,7 @@ void		case_question_mark(t_expand *ex);
 void		case_env_var(t_expand *ex, const char *input);
 
 //tmp
-char		**split_keep_separators(const char *s, bool (*is_sep)(char), t_shell *shell);
+char		**split_keep_separators(const char *s,
+				bool (*is_sep)(char), t_shell *shell);
 
 #endif

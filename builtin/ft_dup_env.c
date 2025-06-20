@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 22:30:55 by sradosav          #+#    #+#             */
-/*   Updated: 2025/06/18 22:15:51 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/20 22:28:00 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,32 +29,35 @@ void	free_env_list(t_envvar **head)
 	*head = NULL;
 }
 
-static t_envvar	*create_env_var(char *str, int exported)
+static t_envvar	*create_env_var(char *str, int exported, t_shell *shell)
 {
 	t_envvar	*node;
 
 	node = malloc(sizeof(t_envvar));
 	if (!node)
-		return (NULL);
+		ft_clean_exit(NULL, shell, NULL, NULL);
 	node->var = ft_strdup(str);
 	if (!node->var)
 	{
 		free(node);
-		return (NULL);
+		ft_clean_exit(NULL, shell, NULL, NULL);
 	}
 	node->exported = exported;
 	node->next = NULL;
 	return (node);
 }
 
-int	add_env_var(t_envvar **head, char *str, int exported)
+int	add_env_var(t_envvar **head, char *str, int exported, t_shell *shell)
 {
 	t_envvar	*new_node;
 	t_envvar	*current;
 
-	new_node = create_env_var(str, exported);
+	new_node = create_env_var(str, exported, shell);
 	if (!new_node)
-		return (0);
+	{
+		free_env_list(head);
+		ft_clean_exit(NULL, shell, NULL, NULL);
+	}
 	if (!*head)
 	{
 		*head = new_node;
@@ -67,7 +70,8 @@ int	add_env_var(t_envvar **head, char *str, int exported)
 	return (1);
 }
 
-t_envvar	*ft_env_to_list(char **envp)
+//LE DERNIER IF EST INUTILE
+t_envvar	*ft_env_to_list(char **envp, t_shell *shell)
 {
 	t_envvar	*env;
 	int			i;
@@ -82,11 +86,7 @@ t_envvar	*ft_env_to_list(char **envp)
 		exported = 1;
 		if (strncmp(envp[i], "_=", 2) == 0)
 			exported = 0;
-		if (!add_env_var(&env, envp[i], exported))
-		{
-			free_env_list(&env);
-			return (NULL);
-		}
+		add_env_var(&env, envp[i], exported, shell);
 		i++;
 	}
 	return (env);

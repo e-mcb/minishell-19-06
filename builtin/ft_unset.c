@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 22:32:39 by sradosav          #+#    #+#             */
-/*   Updated: 2025/06/15 12:43:19 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/21 00:13:02 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,20 @@ void	delete_node(char *var_name, t_envvar **head)
 }
 
 // TOUJOURS PASSER EN PREMIERE CHAINE LA COMMANDE , ICI UNSET
-void	ft_unset(char **str, t_shell *shell)
+void	ft_unset(char **str, t_shell *shell, int in_pipeline)
 {
 	int	i;
 
 	i = 1;
-	while (str[i])
+	if (in_pipeline <= 1)
 	{
-		delete_node(str[i], &shell->env);
-		i++;
+		while (str[i])
+		{
+			delete_node(str[i], &shell->env);
+			i++;
+		}
 	}
-	update_or_add("_", str[i - 1], shell->env, 0);
+	update_or_add("_", str[i - 1], shell, 0);
 	shell->exit_status = 0;
 }
 

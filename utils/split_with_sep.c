@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:49:00 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/18 22:21:03 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/15 11:12:52 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**chunk_handl(char **res, size_t *count_ptr,
 	return (res);
 }
 
-char	**split_keep_separators(const char *s, bool (*is_sep)(char), t_shell *shell)
+char	**split_keep_separators(const char *s, bool (*is_sep)(char))
 {
 	char		**res;
 	t_splitter	splitter;
@@ -64,16 +64,16 @@ char	**split_keep_separators(const char *s, bool (*is_sep)(char), t_shell *shell
 	splitter.capacity = 4;
 	res = malloc(sizeof(char *) * splitter.capacity);
 	if (!res)
-		ft_clean_exit(NULL, shell, NULL, NULL);
+		return (NULL);
 	while (s[splitter.i])
 	{
 		splitter.i = next_chunk_end(s, splitter.start, is_sep);
 		chunk = ft_substr(s, splitter.start, splitter.i - splitter.start);
 		if (!chunk)
-			ft_clean_exit(NULL, shell, NULL, res);
+			return (NULL);
 		res = chunk_handl(res, &(splitter.count), &(splitter.capacity), chunk);
 		if (!res)
-			ft_clean_exit(NULL, shell, NULL, NULL);
+			return (NULL);
 		splitter.start = splitter.i;
 	}
 	res[(splitter.count)] = NULL;
