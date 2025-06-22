@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 22:32:36 by sradosav          #+#    #+#             */
-/*   Updated: 2025/06/15 14:39:14 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/22 16:48:45 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@
 // la fonction retourne le cwd quel que soit le nombre d'arguments
 // le options ne sont pas à gérer. si options, la fonction affiche
 // le cwd normalement. 
-void	ft_pwd(char **str, t_shell *shell)
+void	ft_pwd(char **str, t_shell *shell, int fd_out)
 {
 	char	cwd[1024];
 
 	update_or_add("_", str[count_strings(str) - 1], shell, 0);
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		printf("%s\n", cwd);
+		ft_putstr_fd(cwd, fd_out);
+		ft_putstr_fd("\n", fd_out);
 		shell->exit_status = 0;
 	}
 	else

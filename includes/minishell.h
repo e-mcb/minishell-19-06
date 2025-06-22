@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:31:47 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/21 00:57:21 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/22 16:52:20 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,17 +172,16 @@ int			add_token(t_shell *shell, char *str, t_token_type type, int rank);
 void		ft_print_array(char **str);
 
 //builtins
-void		ft_export(char **str, t_shell *shell, int in_pipeline);
+void		ft_export(char **str, t_shell *shell, int in_pipeline, int fd_out);
 void		ft_cd(char **str, t_shell *shell);
-int			ft_echo(char **str, t_shell *shell);
-void		ft_env(char **str, t_shell *shell);
+int			ft_echo(char **str, t_shell *shell, int fd_out);
+void		ft_env(char **str, t_shell *shell, int fd_out);
 int			ft_exit(char **arr, t_shell *shell);
-void		ft_pwd(char **str, t_shell *shell);
+void		ft_pwd(char **str, t_shell *shell, int fd_out);
 void		ft_unset(char **str, t_shell *shell, int in_pipeline);
 
 //clean exit
 void		ft_free_str_array(char **arr);
-
 void		free_list(t_token **head);
 void		ft_clean_exit(char *input, t_shell *shell,
 				char *str_to_free, char **arr_to_free);
@@ -199,5 +198,8 @@ void		case_env_var(t_expand *ex, const char *input);
 //tmp
 char		**split_keep_separators(const char *s,
 				bool (*is_sep)(char), t_shell *shell);
+
+//exec
+char		*pathfinder(t_shell *shell);
 
 #endif

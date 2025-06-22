@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:32:53 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/18 22:21:30 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/22 14:16:59 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	process_token(t_shell *shell, t_token **tmp, t_token **prev,
 	{
 		*splitted = split_keep_separators(*expanded, is_whitespace, shell);
 		if (((*tmp)->type == FILEN && count_strings(*splitted) > 1)
-		|| ((*tmp)->type == FILEN && splitted[0] == 0))
+			|| ((*tmp)->type == FILEN && splitted[0] == 0))
 		{
 			amb_redir(*expanded, shell);
 			(*tmp)->amb_redir = true;

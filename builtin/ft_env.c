@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 22:31:52 by sradosav          #+#    #+#             */
-/*   Updated: 2025/06/18 19:42:20 by sradosav         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:47:24 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,43 @@
 // -soit envoyer une erreur s'il y a argument ou option
 // dans cette version, je prefere envoyer une erreur.
 // le sujet dit env sans option sans arguments.
-void	ft_env(char **str, t_shell *shell)
+// void	ft_env(char **str, t_shell *shell)
+// {
+// 	int			str_size;
+// 	t_envvar	*env_copy;
+
+// 	str_size = count_strings(str);
+// 	if (str_size > 1)
+// 	{
+// 		ft_putstr_fd("minishell: env: too many arguments or options\n", 2);
+// 		update_or_add("_", str[str_size - 1], shell, 0);
+// 		shell->exit_status = 1;
+// 	}
+// 	else
+// 	{
+// 		env_copy = shell->env;
+// 		while (env_copy)
+// 		{
+// 			if (env_copy->exported == 1 && ft_strchr(env_copy->var, '=')
+// 				&& ft_strncmp(env_copy->var, "_=", 2) != 0)
+// 			{
+// 				printf("%s\n", env_copy->var);
+// 			}
+// 			env_copy = env_copy->next;
+// 		}
+// 		update_or_add("_", str[str_size - 1], shell, 0);
+// 		shell->exit_status = 0;
+// 	}
+// }
+
+void	ft_env(char **str, t_shell *shell, int fd_out)
 {
-	int			str_size;
 	t_envvar	*env_copy;
 
-	str_size = count_strings(str);
-	if (str_size > 1)
+	if (count_strings(str) > 1)
 	{
 		ft_putstr_fd("minishell: env: too many arguments or options\n", 2);
-		update_or_add("_", str[str_size - 1], shell, 0);
+		update_or_add("_", str[count_strings(str) - 1], shell, 0);
 		shell->exit_status = 1;
 	}
 	else
@@ -37,11 +64,12 @@ void	ft_env(char **str, t_shell *shell)
 			if (env_copy->exported == 1 && ft_strchr(env_copy->var, '=')
 				&& ft_strncmp(env_copy->var, "_=", 2) != 0)
 			{
-				printf("%s\n", env_copy->var);
+				ft_putstr_fd(env_copy->var, fd_out);
+				ft_putstr_fd("\n", fd_out);
 			}
 			env_copy = env_copy->next;
 		}
-		update_or_add("_", str[str_size - 1], shell, 0);
+		update_or_add("_", str[count_strings(str) - 1], shell, 0);
 		shell->exit_status = 0;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 22:31:46 by sradosav          #+#    #+#             */
-/*   Updated: 2025/06/18 19:40:10 by sradosav         ###   ########.fr       */
+/*   Updated: 2025/06/22 16:30:07 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,34 @@ int	is_n_flag(char *s)
 // elle n'existe pas.
 // met à jour le exit_status à 0. echo ne foire pas, si l'update 
 // de $_ foire on s en fout, ca aura été print avant et dur a tester
-int	ft_echo(char **str, t_shell *shell)
+// int	ft_echo(char **str, t_shell *shell)
+// {
+// 	int	i;
+// 	int	newline;
+
+// 	i = 1;
+// 	newline = 1;
+// 	while (str[i] && is_n_flag(str[i]))
+// 	{
+// 		newline = 0;
+// 		i++;
+// 	}
+// 	//printf a check avec perror pour le cas de /dev/full par example
+// 	while (str[i])
+// 	{
+// 		printf("%s", str[i]);
+// 		if (str[i + 1])
+// 			printf(" ");
+// 		i++;
+// 	}
+// 	if (newline)
+// 		printf("\n");
+// 	update_or_add("_", str[i - 1], shell, 0);
+// 	shell->exit_status = 0;
+// 	return (0);
+// }
+
+int	ft_echo(char **str, t_shell *shell, int fd_out)
 {
 	int	i;
 	int	newline;
@@ -55,15 +82,16 @@ int	ft_echo(char **str, t_shell *shell)
 		newline = 0;
 		i++;
 	}
+	//printf a check avec perror pour le cas de /dev/full par example
 	while (str[i])
 	{
-		printf("%s", str[i]);
+		ft_putstr_fd(str[i], fd_out);
 		if (str[i + 1])
-			printf(" ");
+			ft_putstr_fd(" ", fd_out);
 		i++;
 	}
 	if (newline)
-		printf("\n");
+		ft_putstr_fd("\n", fd_out);
 	update_or_add("_", str[i - 1], shell, 0);
 	shell->exit_status = 0;
 	return (0);
