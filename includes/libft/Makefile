@@ -33,6 +33,7 @@ SOURCES = 		ft_isalpha.c \
 		ft_putendl_fd.c \
 		ft_putnbr_fd.c \
 		ft_atoll.c \
+		get_next_line.c \
 
 BONUS_SOURCES = ft_lstnew_bonus.c \
 				ft_lstadd_front_bonus.c \
@@ -46,7 +47,7 @@ BONUS_SOURCES = ft_lstnew_bonus.c \
 
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -fPIC
 
 OBJFILES = $(SOURCES:.c=.o)
 OBJBONUSFILES = $(BONUS_SOURCES:.c=.o)

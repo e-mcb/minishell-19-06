@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 22:30:55 by sradosav          #+#    #+#             */
-/*   Updated: 2025/06/20 22:28:00 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 21:17:58 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ void	free_env_list(t_envvar **head)
 	current = *head;
 	while (current)
 	{
-		free(current->var);
-		current->var = NULL;
 		next = current->next;
+		if (current->var)
+		{
+			free(current->var);
+			current->var = NULL;
+		}
 		free(current);
 		current = next;
 	}

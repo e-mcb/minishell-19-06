@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:56:11 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/22 16:58:31 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 21:05:08 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ static int	ft_is_builtin(char *str)
 	return (0);
 }
 
-void	call_builtin(t_shell *shell, t_exec *cur_exec, char *cmd, int *pipe_fd)
+void	call_builtin(t_shell *shell, t_exec *cur_exec, char *cmd)
 {
 	//pipe???
 	//dup2 placeholder
 	if (ft_strcmp(cmd, "echo") == 0)
 		ft_echo(cur_exec->arr, shell, cur_exec->fd_out);
 	if (ft_strcmp(cmd, "cd") == 0)
-		t_cd(cur_exec->arr, shell);
+		ft_cd(cur_exec->arr, shell);
 	if (ft_strcmp(cmd, "pwd") == 0)
 		ft_pwd(cur_exec->arr, shell, cur_exec->fd_out);
 	if (ft_strcmp(cmd, "export") == 0)
@@ -73,32 +73,32 @@ void	call_builtin(t_shell *shell, t_exec *cur_exec, char *cmd, int *pipe_fd)
 	
 // }
 
-void	exec(t_shell *shell)
-{
-	t_exec	*tmp;
-	int		pipe_fd[2];
+// void	exec(t_shell *shell)
+// {
+// 	t_exec	*tmp;
+// 	int		pipe_fd[2];
 
-	tmp = shell->exec;
-	if (ft_execsize == 1)
-		update_or_add("_",
-			shell->exec->arr[count_strings(shell->exec->arr)], shell, 0);
-	while (tmp->next)
-	{
-		//pipe
-		if (is_builtin(tmp->arr[0]), pipe_fd)
-			call_builtin(shell, tmp, tmp->arr[0]);
-		else
-		{
-			call_execve(shell, tmp, pipe_fd);
-		}
+// 	tmp = shell->exec;
+// 	if (ft_execsize == 1)
+// 		update_or_add("_",
+// 			shell->exec->arr[count_strings(shell->exec->arr)], shell, 0);
+// 	while (tmp->next)
+// 	{
+// 		//pipe
+// 		if (is_builtin(tmp->arr[0]), pipe_fd)
+// 			call_builtin(shell, tmp, tmp->arr[0]);
+// 		else
+// 		{
+// 			call_execve(shell, tmp, pipe_fd);
+// 		}
 		
-		tmp = tmp->next;
-	}
-	//dup2 du dernier
-	//wait
-	//waitpid
-	//gestion des closes
-}
+// 		tmp = tmp->next;
+// 	}
+// 	//dup2 du dernier
+// 	//wait
+// 	//waitpid
+// 	//gestion des closes
+// }
 
 
 //builtins s'appellent quand meme dans un fork
@@ -126,7 +126,7 @@ void	exec_loop(t_shell *shell)
 	t_exec	*tmp;
 	char	*path;
 	pid_t	pid;
-	int		pipe_fd[2];
+	// int		pipe_fd[2];
 
 	tmp = shell->exec;
 	if (ft_execsize(tmp) == 1)
@@ -134,7 +134,7 @@ void	exec_loop(t_shell *shell)
 		update_or_add("_",
 			shell->exec->arr[count_strings(shell->exec->arr)], shell, 0);
 		if (ft_is_builtin(tmp->arr[0]))
-			call_builtin(shell, tmp, tmp->arr[0], tmp->fd_out);
+			call_builtin(shell, tmp, tmp->arr[0]);
 		else
 		{
 			pid = fork();
@@ -144,7 +144,7 @@ void	exec_loop(t_shell *shell)
 				dup2(tmp->fd_out, STDOUT_FILENO);
 				path = pathfinder(shell);
 				execve(path, tmp->arr, shell->env_arr);
-				waitpid(pid, &(shell->exit_status), NULL);
+				waitpid(pid, &(shell->exit_status), 0);
 			}
 		}
 	}

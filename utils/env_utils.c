@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 11:43:39 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/18 19:35:58 by sradosav         ###   ########.fr       */
+/*   Updated: 2025/06/23 21:38:16 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,19 @@ void	update_env(char *var, char *str, t_shell *shell)
 		if (envvar_match(copy_env->var, var, len, full_var))
 		{
 			free(copy_env->var);
+			copy_env->var = NULL;
 			new_var = ft_strjoin(full_var, str);
+			if (full_var)
+				free(full_var);
 			if (!new_var)
-				ft_clean_exit(NULL, shell, full_var, NULL);
+				ft_clean_exit(NULL, shell, NULL, NULL);
 			copy_env->var = new_var;
-			free(full_var);
 			return ;
 		}
 		copy_env = copy_env->next;
 	}
-	free(full_var);
+	if (full_var)
+		free(full_var);
 }
 
 void	update_or_add(char *var, char *str, t_shell *shell, int exported)

@@ -6,19 +6,19 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:43:06 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/15 11:12:47 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 16:48:10 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_token	*create_token(char *str)
+t_token	*create_token(char *str, t_shell *shell)
 {
 	t_token	*new_token;
 
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
-		return (NULL);
+		ft_clean_exit(NULL, shell, NULL, NULL);
 	new_token->value = ft_strdup(str);
 	new_token->type = -1;
 	if (!new_token->value)
@@ -35,9 +35,9 @@ int	add_token(t_shell *shell, char *str, t_token_type type, int rank)
 	t_token	*new_token;
 	t_token	*current_token;
 
-	new_token = create_token(str);
+	new_token = create_token(str, shell);
 	if (!new_token)
-		return (1);
+		ft_clean_exit(NULL, shell, NULL, NULL);
 	new_token->type = type;
 	new_token->rank = rank;
 	if (shell->token == NULL)

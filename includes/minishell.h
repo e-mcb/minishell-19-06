@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:31:47 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/22 16:52:20 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 21:11:55 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ typedef struct s_envvar
 
 typedef struct s_exec
 {
-	char	**arr;
-	int		fd_in;
-	int		fd_out;
-	char	*heredoc;
-	bool	heredoc_bool;
-	t_exec	*next;
-	int		pid;
+	char			**arr;
+	int				fd_in;
+	int				fd_out;
+	char			*heredoc;
+	bool			heredoc_bool;
+	struct s_exec	*next;
+	int				pid;
 }	t_exec;
 
 typedef struct s_shell
@@ -127,6 +127,7 @@ bool		is_quote(char c);
 bool		is_closing_quote(char c, char opening_quote);
 bool		handle_quotes(char c, bool *in_quotes, char *opening_quote);
 bool		is_whitespace(char c);
+bool		is_redir(t_token *t);
 
 //string_utils functions
 char		*ft_substrword(char *str, int start, int end, t_shell *shell);
@@ -142,18 +143,21 @@ char		*ft_strndup(const char *s, size_t n);
 
 //misc utils
 void		*ft_realloc(void *ptr, int old_size, int new_size);
+int			is_valid_identifier(char *str);
 
 //env utils
-int			env_var_exists(char *var, t_envvar *env);
-void		update_env(char *var, char *str, t_envvar *env);
-void		update_or_add(char *var, char *str, t_envvar *env, int exported);
-char		*ft_getenv(char *var, t_envvar *env);
-t_envvar	*ft_env_to_list(char **envp);
+int			env_var_exists(char *var, t_shell *shell);
+void		update_env(char *var, char *str, t_shell *shell);
+void		update_or_add(char *var, char *str, t_shell *shell, int exported);
+char		*ft_getenv(char *var, t_shell *shell);
+t_envvar	*ft_env_to_list(char **envp, t_shell *shell);
 t_envvar	*copy_env_list(t_envvar *env, t_shell *shell);
 void		ft_sort_env_list(t_envvar *head);
 void		free_env_list(t_envvar **head);
-int			add_env_var(t_envvar **head, char *str, int exported);
+int			add_env_var(t_envvar **head, char *str, int exported, t_shell *shell);
 void		free_env_list(t_envvar **head);
+void		env_list_to_arr(t_shell *shell);
+int			envvar_match(char *env_var, char *var, size_t len, char *full_var);
 
 //parsing utils
 int			ft_has_invalid_quotes(const char *str);
@@ -185,6 +189,7 @@ void		ft_free_str_array(char **arr);
 void		free_list(t_token **head);
 void		ft_clean_exit(char *input, t_shell *shell,
 				char *str_to_free, char **arr_to_free);
+void		free_exec_list(t_exec **exec);
 
 //expand
 void		expand(t_shell *shell);
@@ -193,13 +198,17 @@ char		**split_and_expand(const char *input, t_shell *shell);
 char		*join_chars(char **str, t_shell *shell);
 void		case_only_dollar(t_expand *ex);
 void		case_question_mark(t_expand *ex);
-void		case_env_var(t_expand *ex, const char *input);
+void		case_env_var(t_expand *ex, const char *input, t_shell *shell);
+t_token		*skip_to_pipe(t_token *token);
 
 //tmp
-char		**split_keep_separators(const char *s,
-				bool (*is_sep)(char), t_shell *shell);
+char		**split_keep_separators(const char *s, bool (*is_sep)(char), t_shell *shell);
 
 //exec
 char		*pathfinder(t_shell *shell);
+void		exec_loop(t_shell *shell);
+char		*do_heredoc(t_token *token);
+t_token		*handle_redir(t_exec *exec, t_token *tmp);
+void		create_exec(t_shell *shell);
 
 #endif

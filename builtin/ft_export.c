@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 22:32:04 by sradosav          #+#    #+#             */
-/*   Updated: 2025/06/22 16:51:04 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 16:51:04 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	ft_print_export(t_shell *shell, int fd_out)
 	t_envvar	*env_copy;
 	t_envvar	*iter;
 
-	env_copy = copy_env_list(shell, shell);
+	env_copy = copy_env_list(shell->env, shell);
 	ft_sort_env_list(env_copy);
 	iter = env_copy;
 	while (iter)
@@ -125,9 +125,9 @@ void	handle_valid_export(char *str, t_shell *shell)
 void	ft_export_vars(char **str, t_shell *shell)
 {
 	int		i;
-	int		var_len;
-	char	*var;
-	char	*value;
+	// int		var_len;
+	// char	*var;
+	// char	*value;
 
 	i = 1;
 	while (str[i])

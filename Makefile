@@ -10,6 +10,7 @@ EXPAND_DIR = expand
 BUILTIN_DIR = builtin
 LIBFT_DIR = includes/libft
 OBJ_DIR = objects
+EXEC_DIR = exec
 
 # Source files
 SRCS = main.c \
@@ -39,6 +40,12 @@ SRCS = main.c \
 	$(BUILTIN_DIR)/ft_export.c \
 	$(BUILTIN_DIR)/ft_pwd.c \
 	$(BUILTIN_DIR)/ft_unset.c \
+	$(EXEC_DIR)/exec_to_sort.c \
+	$(EXEC_DIR)/executing.c \
+	$(EXEC_DIR)/pathfinder.c \
+	$(EXEC_DIR)/prep_exec.c \
+	$(EXEC_DIR)/redirs.c \
+	$(EXEC_DIR)/heredocs.c \
 
 # Create list of object files in the objects/ dir
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

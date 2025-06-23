@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 14:29:55 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/15 14:20:32 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 20:51:46 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	case_question_mark(t_expand *ex)
 	ex->start = ex->i;
 }
 
-void	case_env_var(t_expand *ex, const char *input)
+void	case_env_var(t_expand *ex, const char *input, t_shell *shell)
 {
 	char	*varname;
 	char	*value;
@@ -59,7 +59,7 @@ void	case_env_var(t_expand *ex, const char *input)
 		&& input[ex->i] != '"' && input[ex->i] != '\'' && input[ex->i] != '$'
 		&& (ft_isalnum(input[ex->i]) || input[ex->i] == '_'))
 		ex->i++;
-	varname = strndup_custom(input + ex->start, ex->i - ex->start);
+	varname = strndup_custom(input + ex->start, ex->i - ex->start, shell);
 	value = get_env_value(varname);
 	ex->result[ex->j++] = value;
 	free(varname);

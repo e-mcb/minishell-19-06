@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:47:29 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/20 22:48:42 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 21:12:16 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	handle_heredoc(t_exec *exec, t_token *tmp)
 	if (exec->fd_in > 0)
 		close(exec->fd_in);
 	exec->fd_in = 0;
-	exec->heredoc = heredoc(tmp->next);
+	exec->heredoc = do_heredoc(tmp->next);
 	exec->heredoc_bool = true;
 	exec->fd_in = 0;
 	return (0);

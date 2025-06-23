@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 21:18:02 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/21 01:00:39 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 21:39:37 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,43 @@ void	ft_clean_exit(char *input, t_shell *shell,
 	char *str_to_free, char **arr_to_free)
 {
 	if (str_to_free)
-		free(str_to_free);
+			free(str_to_free);
 	if (arr_to_free)
-		ft_free_str_array(arr_to_free);
+			ft_free_str_array(arr_to_free);
 	if (input)
-		free(input);
+		{
+			free(input);
+			input = NULL;
+		}
 	if (shell->env)
-		free_env_list(&(shell->env));
+		{
+			free_env_list(&(shell->env));
+			shell->env = NULL;
+		}
 	if (shell->env_arr)
-		ft_free_str_array(shell->env_arr);
+		{
+			ft_free_str_array(shell->env_arr);
+			shell->env_arr = NULL;
+		}
 	if (shell->splitted)
-		ft_free_str_array(shell->splitted);
+		{
+			ft_free_str_array(shell->splitted);
+			shell->splitted = NULL;
+		}
 	if (shell->token)
-		free_list(&(shell->token));
+		{
+			free_list(&(shell->token));
+			shell->token = NULL;
+		}
 	if (shell->exec)
-		free_exec_list(&(shell->exec));
+		{
+			free_exec_list(&(shell->exec));
+			shell->exec = NULL;
+		}
 	if (shell)
-		free(shell);
+		{
+			free(shell);
+			shell = NULL;
+		}
 	exit(0);
 }

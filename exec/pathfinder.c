@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:16:08 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/22 16:56:37 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 21:05:34 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*pathfinder(t_shell *shell)
 	char	*path_var;
 	int		i;
 
-	path_var = ft_getenv("PATH", shell->env);
+	path_var = ft_getenv("PATH", shell);
 	if (!path_var)
 		return (NULL);
 	poss_paths = ft_split(path_var, ':');

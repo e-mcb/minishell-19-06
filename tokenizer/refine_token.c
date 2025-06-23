@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 17:12:13 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/15 11:14:19 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 20:59:24 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	is_str_digit(char *str)
 	return (1);
 }
 
-static bool	is_redir(t_token *t)
+bool	is_redir(t_token *t)
 {
 	return (t && (t->type == IN || t->type == OUT || t->type == APPEND));
 }

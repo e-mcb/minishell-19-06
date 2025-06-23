@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 19:46:35 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/20 23:55:10 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 21:06:41 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ static int	ft_envsize(t_envvar *var)
 	return (i);
 }
 
-char	**env_list_to_arr(t_shell *shell)
+void	env_list_to_arr(t_shell *shell)
 {
 	t_envvar	*tmp;
 	int			lst_size;
 	int			i;
 
 	i = 0;
-	tmp = shell->env_arr;
+	tmp = shell->env;
 	lst_size = ft_envsize(shell->env);
 	if (shell->env_arr)
 		ft_free_str_array(shell->env_arr);
@@ -46,6 +46,7 @@ char	**env_list_to_arr(t_shell *shell)
 		tmp = tmp->next;
 	}
 	shell->env_arr[i] = NULL;
+	
 }
 
 

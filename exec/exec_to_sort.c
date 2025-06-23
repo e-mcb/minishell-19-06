@@ -6,11 +6,28 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:39:57 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/20 22:55:23 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 21:01:01 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+t_exec *init_exec(void)
+{
+	t_exec *exec;
+	
+	exec = malloc(sizeof(t_exec));
+	if (!exec)
+		return NULL;
+	exec->arr = NULL;
+	exec->fd_in = 0;
+	exec->fd_out = 1;
+	exec->next = NULL;
+	exec->heredoc = NULL;
+	exec->heredoc_bool = false;
+	exec->pid = -1;
+	return (exec);
+}
 
 t_exec	*new_node(t_exec *head)
 {
@@ -41,9 +58,7 @@ t_token	*skip_to_pipe(t_token *token)
 			{
 				write(1, ">", 1);
 				line = get_next_line(0);
-				if (ft_strncmp(line, token->next->value,
-						ft_strlen(token->value) == 0)
-					|| (token->next->value == "" && line[0] == '\n'))
+				if ((ft_strncmp(line, token->next->value, ft_strlen(token->value)) == 0) || (token->next->value[0] == 0 && line[0] == '\n'))
 				{
 					free(line);
 					token = token->next;
@@ -57,7 +72,38 @@ t_token	*skip_to_pipe(t_token *token)
 	return (token);
 }
 
-void	loop_token(t_shell *shell)
+char	**add_string_to_array(char **array, char *str)
+{
+	int		i;
+	int		j;
+	char	**new_array;
+
+	i = 0;
+	j = 0;
+	while (array && array[i])
+		i++;
+	new_array = malloc((i + 2) * sizeof(char *));
+	if (!new_array)
+		return (NULL);
+		// VOIR CE QU ON FAIT SI CA FOIRE
+	while (j< i)
+	{
+		new_array[j] = array[j];
+		j++;
+	}
+	new_array[i] = ft_strdup(str);
+	if (!new_array[i])
+	{
+		free(new_array);
+		return (NULL);
+		// VOIR CE QU ON FAIT SI CA FOIRE
+	}
+	new_array[i + 1] = NULL;
+	free(array);
+	return (new_array);
+}
+
+void	create_exec(t_shell *shell)
 {
 	t_exec	*exec;
 	t_token	*tmp;
@@ -67,15 +113,16 @@ void	loop_token(t_shell *shell)
 	tmp = shell->token;
 	exec = new_node(NULL);
 	last = exec;
+	heredoc = NULL;
 	while (tmp)
 	{
 		if (tmp->type == PIPE)
 		{
-			last->next == new_node(exec);
+			last->next = new_node(exec);
 			last = last->next;
-			last->heredoc == heredoc;
+			last->heredoc = heredoc;
 		}
-		if (is_redir(tmp->type))
+		if (is_redir(tmp))
 			tmp = handle_redir(last, tmp);
 		if (tmp->type == ARG || tmp->type == CMD)
 			exec->arr = add_string_to_array(exec->arr, tmp->value);
