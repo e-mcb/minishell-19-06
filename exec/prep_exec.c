@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 19:46:35 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 21:06:41 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 23:15:44 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ void	env_list_to_arr(t_shell *shell)
 		ft_clean_exit(NULL, shell, NULL, NULL);
 	while (tmp)
 	{
-		shell->env_arr[i] = tmp->var;
+		shell->env_arr[i] = ft_strdup(tmp->var);
+		if (!shell->env_arr[i])
+			ft_clean_exit(NULL, shell, NULL, NULL);
 		i++;
 		tmp = tmp->next;
 	}

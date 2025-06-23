@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:56:11 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 21:05:08 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 23:55:19 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,14 @@ void	exec_loop(t_shell *shell)
 	// int		pipe_fd[2];
 
 	tmp = shell->exec;
+	printf("%d\n", STDIN_FILENO);
+	printf("%d\n", STDOUT_FILENO);
+	printf("%d\n", tmp->fd_in);
+	printf("%d\n", tmp->fd_out);
 	if (ft_execsize(tmp) == 1)
 	{
-		update_or_add("_",
-			shell->exec->arr[count_strings(shell->exec->arr)], shell, 0);
+		// update_or_add("_",
+			// shell->exec->arr[count_strings(shell->exec->arr)], shell, 0);
 		if (ft_is_builtin(tmp->arr[0]))
 			call_builtin(shell, tmp, tmp->arr[0]);
 		else
@@ -142,10 +146,12 @@ void	exec_loop(t_shell *shell)
 			{
 				dup2(tmp->fd_in, STDIN_FILENO);
 				dup2(tmp->fd_out, STDOUT_FILENO);
+				printf("%dIN\n", STDIN_FILENO);
+				printf("%dOUT\n", STDOUT_FILENO);
 				path = pathfinder(shell);
 				execve(path, tmp->arr, shell->env_arr);
-				waitpid(pid, &(shell->exit_status), 0);
 			}
+				waitpid(pid, &(shell->exit_status), 0);
 		}
 	}
 }

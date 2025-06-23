@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 22:31:57 by sradosav          #+#    #+#             */
-/*   Updated: 2025/06/15 14:35:06 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 22:30:26 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	free_before_exit(t_shell *shell, void *ptr_a, void *ptr_b)
 			free_env_list(&(shell->env));
 		if (shell->env_arr)
 			ft_free_str_array(shell->env_arr);
-		if (shell->splitted)
-			ft_free_str_array(shell->splitted);
+		// if (shell->splitted)
+		// 	ft_free_str_array(shell->splitted);
 		if (shell->token)
 			free_list(&(shell->token));
 		if (shell->exec)

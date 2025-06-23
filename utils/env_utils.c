@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 11:43:39 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 21:38:16 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/23 23:30:27 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,10 @@ void	update_env(char *var, char *str, t_shell *shell)
 			free(copy_env->var);
 			copy_env->var = NULL;
 			new_var = ft_strjoin(full_var, str);
-			if (full_var)
-				free(full_var);
 			if (!new_var)
-				ft_clean_exit(NULL, shell, NULL, NULL);
+				ft_clean_exit(full_var, shell, NULL, NULL);
 			copy_env->var = new_var;
+			free (full_var);
 			return ;
 		}
 		copy_env = copy_env->next;

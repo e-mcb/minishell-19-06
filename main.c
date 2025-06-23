@@ -131,12 +131,13 @@ static t_shell	*init_shell(t_shell *shell, char **envp)
 	shell->exit_status = 0;
 	if (shell->env == NULL)
 		ft_clean_exit(NULL, shell, NULL, NULL);
+	shell->exec = NULL;
 	return (shell);
 }
 
 static void	ft_parsing(char *input, t_shell *shell)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	whitespace_to_space(input);
@@ -149,7 +150,8 @@ static void	ft_parsing(char *input, t_shell *shell)
 		tokenizer(shell, i);
 		i++;
 	}
-	ft_free_str_array(shell->splitted);
+	if (shell->splitted != NULL)
+		ft_free_str_array(shell->splitted);
 	refine_token_type(shell->token);
 	expand(shell);
 	second_refine_token_type(shell->token);
@@ -183,4 +185,20 @@ int	main(int argc, char **argv, char **envp)
 	shell = NULL;
 	shell = init_shell(shell, envp);
 	minishell_loop(shell);
+	
 }
+
+// int main()
+// {
+// 	char **splitted;
+// 	char init[] = "echo idiot";
+// 	char *cpy;
+
+// 	cpy = strdup(init);
+// 	whitespace_to_space(cpy);
+// 	splitted = ft_split2(cpy, ' ');
+// 	printf("%s\n", splitted[0]);
+// 	printf("%s\n", splitted[1]);
+// 	ft_free_str_array(splitted);
+// 	free(cpy);
+// }
