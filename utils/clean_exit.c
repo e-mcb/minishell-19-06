@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 21:18:02 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 22:30:47 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/26 01:36:10 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,21 @@ void	ft_free_str_array(char **arr)
 	free(arr);
 }
 
+// void	ft_free_str_array(char **arr)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (!arr)
+// 		return ;
+// 	while (arr[i] != NULL)
+// 	{
+// 		free(arr[i]);
+// 		i++;
+// 	}
+// 	free(arr);
+// }
+
 void	free_exec_list(t_exec **exec)
 {
 	t_exec	*next;
@@ -56,14 +71,16 @@ void	free_exec_list(t_exec **exec)
 			ft_free_str_array((*exec)->arr);
 		if ((*exec)->heredoc)
 			free((*exec)->heredoc);
-		if ((*exec)->fd_in > 0)
+		if ((*exec)->fd_in != STDIN_FILENO && (*exec)->fd_in > -1)
 			close((*exec)->fd_in);
-		if ((*exec)->fd_out > 1)
+		if ((*exec)->fd_out != STDOUT_FILENO && (*exec)->fd_out > -1)
 			close((*exec)->fd_out);
 		free(*exec);
 		*exec = next;
 	}
+	*exec = NULL;
 }
+
 
 void	ft_clean_exit(char *input, t_shell *shell,
 	char *str_to_free, char **arr_to_free)
@@ -78,8 +95,6 @@ void	ft_clean_exit(char *input, t_shell *shell,
 		free_env_list(&(shell->env));
 	if (shell->env_arr)
 		ft_free_str_array(shell->env_arr);
-	// if (shell->splitted)
-	// 	ft_free_str_array(shell->splitted);
 	if (shell->token)
 		free_list(&(shell->token));
 	if (shell->exec)

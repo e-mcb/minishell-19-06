@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:39:57 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/25 23:04:45 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/26 01:04:11 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,10 @@ char	**add_string_to_array(char **array, char *str)
 	if (!new_array)
 		return (NULL);
 		// VOIR CE QU ON FAIT SI CA FOIRE
-	while (j< i)
+	while (j < i)
 	{
 		new_array[j] = ft_strdup(array[j]);
+		free(array[j]);
 		j++;
 	}
 	new_array[i] = ft_strdup(str);
@@ -125,7 +126,7 @@ void	create_exec(t_shell *shell)
 		if (is_redir(tmp))
 			tmp = handle_redir(last, tmp);
 		if (tmp->type == ARG || tmp->type == CMD)
-			exec->arr = add_string_to_array(exec->arr, tmp->value);
+			last->arr = add_string_to_array(last->arr, tmp->value);
 		tmp = tmp->next;
 	}
 	shell->exec = exec;

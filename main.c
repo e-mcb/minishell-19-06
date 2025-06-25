@@ -158,6 +158,46 @@ static void	ft_parsing(char *input, t_shell *shell)
 	shell->splitted = NULL;
 }
 
+void print_str_array(char **arr)
+{
+    int i = 0;
+
+    if (!arr)
+        return;
+
+    while (arr[i])
+    {
+        printf("[%d]: %s\n", i, arr[i]);
+        i++;
+    }
+}
+
+// static void	minishell_loop(t_shell *shell)
+// {
+// 	char	*input;
+// 	t_exec	*tmp;
+
+
+// 	while (1)
+// 	{
+// 		input = prompt(shell);
+// 		if (input == NULL)
+// 			continue ;
+// 		ft_parsing(input, shell);
+// 		create_exec(shell);
+// 		env_list_to_arr(shell);
+// 		tmp = shell->exec;
+// 		while(tmp)
+// 		{
+// 			print_str_array(tmp->arr);
+// 			tmp = tmp->next;
+// 		}
+// 		// exec_loop(shell);
+// 		// [EXEC PLACEHOLDER]
+// 		free_list(&shell->token);
+// 	}
+// }
+
 static void	minishell_loop(t_shell *shell)
 {
 	char	*input;
@@ -167,12 +207,20 @@ static void	minishell_loop(t_shell *shell)
 		input = prompt(shell);
 		if (input == NULL)
 			continue ;
+		if (input[0] == 0)
+		{
+			free(input);
+			continue ;
+		}
 		ft_parsing(input, shell);
 		create_exec(shell);
 		env_list_to_arr(shell);
 		exec_loop(shell);
 		// [EXEC PLACEHOLDER]
 		free_list(&shell->token);
+		free_exec_list(&(shell->exec));
+		ft_free_str_array(shell->env_arr);
+		shell->env_arr = NULL;
 	}
 }
 
