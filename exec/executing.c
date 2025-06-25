@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:56:11 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 23:55:19 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/25 23:46:12 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,37 +121,121 @@ void	call_builtin(t_shell *shell, t_exec *cur_exec, char *cmd)
 
 
 
+// void	exec_loop(t_shell *shell)
+// {
+// 	t_exec	*tmp;
+// 	char	*path;
+// 	pid_t	pid;
+// 	// int		pipe_fd[2];
+
+// 	tmp = shell->exec;
+// 	printf("%d\n", STDIN_FILENO);
+// 	printf("%d\n", STDOUT_FILENO);
+// 	printf("%d\n", tmp->fd_in);
+// 	printf("%d\n", tmp->fd_out);
+// 	if (ft_execsize(tmp) == 1)
+// 	{
+// 		// update_or_add("_",
+// 			// shell->exec->arr[count_strings(shell->exec->arr)], shell, 0);
+// 		if (ft_is_builtin(tmp->arr[0]))
+// 			call_builtin(shell, tmp, tmp->arr[0]);
+// 		else
+// 		{
+// 			pid = fork();
+// 			if (pid == 0)
+// 			{
+// 				dup2(tmp->fd_in, STDIN_FILENO);
+// 				dup2(tmp->fd_out, STDOUT_FILENO);
+// 				printf("%dIN\n", STDIN_FILENO);
+// 				printf("%dOUT\n", STDOUT_FILENO);
+// 				path = pathfinder(shell);
+// 				execve(path, tmp->arr, shell->env_arr);
+// 			}
+// 				waitpid(pid, &(shell->exit_status), 0);
+// 		}
+// 	}
+// }
+
 void	exec_loop(t_shell *shell)
 {
 	t_exec	*tmp;
 	char	*path;
 	pid_t	pid;
-	// int		pipe_fd[2];
+	int		pipe_fd[2];
+	int		status;
+	// int		prev_fd_in = 0;
 
 	tmp = shell->exec;
-	printf("%d\n", STDIN_FILENO);
-	printf("%d\n", STDOUT_FILENO);
-	printf("%d\n", tmp->fd_in);
-	printf("%d\n", tmp->fd_out);
-	if (ft_execsize(tmp) == 1)
-	{
-		// update_or_add("_",
-			// shell->exec->arr[count_strings(shell->exec->arr)], shell, 0);
-		if (ft_is_builtin(tmp->arr[0]))
+	if (ft_execsize(tmp) == 1 && ft_is_builtin(shell->exec->arr[0]))
 			call_builtin(shell, tmp, tmp->arr[0]);
-		else
+	else
+	{
+		while (tmp)
 		{
+			if(pipe(pipe_fd) < 0)
+				ft_clean_exit(NULL, shell, NULL, NULL);
+			if (tmp->next != NULL && tmp->next->fd_in == 0 && tmp->next->heredoc_bool == false) // heredoc a check aussi | on remplace stdin par read_pipe
+					tmp->next->fd_in = pipe_fd[0];
 			pid = fork();
+			if (pid < 0)
+				ft_clean_exit(NULL, shell, NULL, NULL);
 			if (pid == 0)
 			{
+				if (tmp->heredoc_bool == true)
+					ft_putstr_fd(tmp->heredoc, STDIN_FILENO);
+			if (tmp->fd_in != STDIN_FILENO)
+			{
 				dup2(tmp->fd_in, STDIN_FILENO);
-				dup2(tmp->fd_out, STDOUT_FILENO);
-				printf("%dIN\n", STDIN_FILENO);
-				printf("%dOUT\n", STDOUT_FILENO);
-				path = pathfinder(shell);
-				execve(path, tmp->arr, shell->env_arr);
+				close(tmp->fd_in);
 			}
-				waitpid(pid, &(shell->exit_status), 0);
+
+			// Handle pipe output
+			if (tmp->next && tmp->fd_out == STDOUT_FILENO)
+			{
+				dup2(pipe_fd[1], STDOUT_FILENO);
+				close(pipe_fd[1]);
+			}
+
+			// Handle output redirection (overwrite pipe redirection if it exists)
+			if (tmp->fd_out != STDOUT_FILENO)
+			{
+				dup2(tmp->fd_out, STDOUT_FILENO);
+				close(tmp->fd_out);
+			}		
+				if (ft_is_builtin(tmp->arr[0]))
+					call_builtin(shell, tmp, tmp->arr[0]);
+				else
+				{
+					path = pathfinder(shell, tmp);
+					execve(path, tmp->arr, shell->env_arr);
+				}
+				exit (1);
+			}
+			close(pipe_fd[1]);
+			close(pipe_fd[0]);
+			tmp = tmp->next;
 		}
+		while(wait(&status) > 0);
+		//waitpid
 	}
 }
+
+
+
+
+// while(tmp)
+// {
+// 	if (tmp->heredoc_bool == true)
+// 		ft_putstr_fd(tmp->heredoc, 0);
+// 	if (tmp->in_fd != 0) // que pour le 1er parce que on modifie in_fd de next s'il m'a pas changer en fin de loop
+// 		dup2(tmp->in_fd, STDIN_FILENO);
+// 	if (tmp->next && tmp->out_fd == 1)// on remplace la sortie par l'ecriture du pipe
+// 		dup2(tmp->out_fd, pipe_fd[1]);
+// 	if (tmp->out_fd != 1) //on remplace la sortie par le fichier qu'on a ouvert
+// 		dup2(tmp->out_fd, STDOUT_FILENO);
+// 	// else if (tmp->next == NULL && tmp->out_fd == 1) // si on est en fin de chaine, etre sur d'ecrire dans stdout
+// 	// 	// dup2(STDOUT_FILENO, STDOUT_FILENO); || probblement pas utile
+// 	if (tmp->next->in_fd == 0  && tmp->next != NULL && tmp->next->heredoc_bool == false) // heredoc a check aussi | on remplace stdin par read_pipe
+// 		tmp->next->in_fd = pipe_fd[0];
+// 	tmp = tmp->next;
+// }

@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:16:08 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 21:05:34 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/25 22:37:27 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*construct_final_path(char *path, char *cmd)
 	return (final_path);
 }
 
-char	*pathfinder(t_shell *shell)
+char	*pathfinder(t_shell *shell, t_exec *current)
 {
 	char	**poss_paths;
 	char	*final_path;
@@ -48,12 +48,12 @@ char	*pathfinder(t_shell *shell)
 
 	path_var = ft_getenv("PATH", shell);
 	if (!path_var)
-		return (NULL);
+		return (NULL); //msg d'erreurs
 	poss_paths = ft_split(path_var, ':');
 	i = 0;
 	while (poss_paths[i])
 	{
-		final_path = construct_final_path(poss_paths[i], shell->exec->arr[0]);
+		final_path = construct_final_path(poss_paths[i], current->arr[0]);
 		if (final_path != NULL && access (final_path, F_OK) == 0)
 		{
 			free_possible_paths(poss_paths);

@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 17:12:13 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 20:59:24 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/25 19:35:31 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static bool	is_fd_case(t_token *t)
 static void	set_word_type(t_token *t, t_token *p)
 {
 	if (p && is_redir(p))
-		t->type = FILEN;
+		t->type = FILEN;	
 	else if (p && p->type == HDOC)
 		t->type = LIMITER;
 	else if (is_fd_case(t))

@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:31:47 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 21:11:55 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/25 22:40:23 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ t_token		*skip_to_pipe(t_token *token);
 char		**split_keep_separators(const char *s, bool (*is_sep)(char), t_shell *shell);
 
 //exec
-char		*pathfinder(t_shell *shell);
+char		*pathfinder(t_shell *shell, t_exec *current);
 void		exec_loop(t_shell *shell);
 char		*do_heredoc(t_token *token);
 t_token		*handle_redir(t_exec *exec, t_token *tmp);

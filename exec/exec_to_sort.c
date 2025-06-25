@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:39:57 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 21:01:01 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/25 23:04:45 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	**add_string_to_array(char **array, char *str)
 		// VOIR CE QU ON FAIT SI CA FOIRE
 	while (j< i)
 	{
-		new_array[j] = array[j];
+		new_array[j] = ft_strdup(array[j]);
 		j++;
 	}
 	new_array[i] = ft_strdup(str);

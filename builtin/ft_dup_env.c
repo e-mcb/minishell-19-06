@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 22:30:55 by sradosav          #+#    #+#             */
-/*   Updated: 2025/06/23 21:17:58 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/25 23:02:19 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ t_envvar	*ft_env_to_list(char **envp, t_shell *shell)
 		return (NULL);
 	env = NULL;
 	i = 0;
+	exported = -1;
 	while (envp[i])
 	{
 		exported = 1;
