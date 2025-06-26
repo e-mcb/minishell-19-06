@@ -1,0 +1,11 @@
+expand if first char is not alpha, just expand that one character and print what comes after (echo $9USER prints USER)
+heredoc a revoir
+exec a mettre a la norme
+skip_to_pipe a check
+message d'erreurs (syntaxe)
+signaux (variable globale)
+print export uninitialized value
+exit petit leak
+env -i etc...
+SHLVL
+lancer minishell dans minishell (hardcode type builtin?)

@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:56:11 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/26 01:33:34 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/26 20:05:50 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,92 +222,20 @@ void	call_builtin(t_shell *shell, t_exec *cur_exec, char *cmd)
 
 void exec_loop(t_shell *shell)
 {
-    t_exec *tmp;
-    char *path;
-    pid_t pid;
-    int pipe_fd[2];
-    int status;
-    int prev_fd_in = STDIN_FILENO;
+	t_exec *tmp;
+	char *path;
+	pid_t pid;
+	int pipe_fd[2];
+	int status;
+	int prev_fd_in = STDIN_FILENO;
+	int	i = 2;
 
-    tmp = shell->exec;
-    if (ft_execsize(tmp) == 1 && ft_is_builtin(shell->exec->arr[0]))
-    {
-        call_builtin(shell, tmp, tmp->arr[0]);
-        return;
-    }
-
-//     while (tmp)
-//     {
-//         if (tmp->next != NULL)
-//         {
-//             if (pipe(pipe_fd) < 0)
-//                 ft_clean_exit(NULL, shell, NULL, NULL);
-//         }
-
-//         pid = fork();
-//         if (pid < 0)
-//             ft_clean_exit(NULL, shell, NULL, NULL);
-
-//         if (pid == 0)
-//         {
-//             if (tmp->heredoc_bool == true)
-//                 ft_putstr_fd(tmp->heredoc, STDIN_FILENO);
-
-//             if (tmp->fd_in != STDIN_FILENO)
-//             {
-//                 if (dup2(tmp->fd_in, STDIN_FILENO) < 0)
-//                     ft_clean_exit(NULL, shell, NULL, NULL);
-//                 close(tmp->fd_in);
-//             }
-
-//             if (tmp->next != NULL && tmp->fd_out == STDOUT_FILENO)
-//             {
-//                 if (dup2(pipe_fd[1], STDOUT_FILENO) < 0)
-//                     ft_clean_exit(NULL, shell, NULL, NULL);
-//                 close(pipe_fd[1]);
-//                 close(pipe_fd[0]);
-//             }
-
-//             if (tmp->fd_out != STDOUT_FILENO)
-//             {
-//                 if (dup2(tmp->fd_out, STDOUT_FILENO) < 0)
-//                     ft_clean_exit(NULL, shell, NULL, NULL);
-//                 close(tmp->fd_out);
-//             }
-
-//             if (ft_is_builtin(tmp->arr[0]))
-//             {
-//                 call_builtin(shell, tmp, tmp->arr[0]);
-// 				ft_clean_exit(NULL, shell, NULL, NULL);
-//             }
-//             else
-//             {
-//                 path = pathfinder(shell, tmp);
-//                 if (path == NULL)
-//                     ft_clean_exit(NULL, shell, NULL, NULL);
-//                 execve(path, tmp->arr, shell->env_arr);
-//                 ft_clean_exit(NULL, shell, NULL, NULL);
-//             }
-//         }
-//         else
-//         {
-//             if (tmp->next != NULL)
-//             {
-//                 close(pipe_fd[1]);
-//                 if (tmp->next->fd_in == STDIN_FILENO)
-//                     tmp->next->fd_in = pipe_fd[0];
-//                 else
-//                     close(pipe_fd[0]);
-//             }
-//         }
-
-//         tmp = tmp->next;
-//     }
-
-//     while (wait(&status) > 0)
-//         ;
-// }
-
+	tmp = shell->exec;
+	if (ft_execsize(tmp) == 1 && ft_is_builtin(shell->exec->arr[0]))
+	{
+		call_builtin(shell, tmp, tmp->arr[0]);
+		return;
+	}
 	while (tmp)
 	{
 		if (tmp->next != NULL)
@@ -319,20 +247,14 @@ void exec_loop(t_shell *shell)
 		pid = fork();
 		if (pid < 0)
 			ft_clean_exit(NULL, shell, NULL, NULL);
-
 		if (pid == 0)
 		{
-			// CHILD PROCESS
-
-			// If input fd is not STDIN, dup2 it and close
 			if (tmp->fd_in != STDIN_FILENO)
 			{
 				if (dup2(tmp->fd_in, STDIN_FILENO) < 0)
 					ft_clean_exit(NULL, shell, NULL, NULL);
 				close(tmp->fd_in);
 			}
-
-			// If there's a next command and fd_out is STDOUT, pipe write end dup2 to STDOUT
 			if (tmp->next != NULL && tmp->fd_out == STDOUT_FILENO)
 			{
 				if (dup2(pipe_fd[1], STDOUT_FILENO) < 0)
@@ -340,62 +262,66 @@ void exec_loop(t_shell *shell)
 				close(pipe_fd[0]);
 				close(pipe_fd[1]);
 			}
-
-			// Handle output fd if redirected
 			if (tmp->fd_out != STDOUT_FILENO)
 			{
 				if (dup2(tmp->fd_out, STDOUT_FILENO) < 0)
 					ft_clean_exit(NULL, shell, NULL, NULL);
 				close(tmp->fd_out);
 			}
-            if (ft_is_builtin(tmp->arr[0]))
-            {
-                call_builtin(shell, tmp, tmp->arr[0]);
+			if (ft_is_builtin(tmp->arr[0]))
+			{
+				call_builtin(shell, tmp, tmp->arr[0]);
 				ft_clean_exit(NULL, shell, NULL, NULL);
-            }
-            else
-            {
-                path = pathfinder(shell, tmp);
-                if (path == NULL)
-                    ft_clean_exit(NULL, shell, NULL, NULL);
-                execve(path, tmp->arr, shell->env_arr);
-                ft_clean_exit(NULL, shell, NULL, NULL);
-            }
-        }
+			}
+			else
+			{
+				path = pathfinder(shell, tmp);
+				while (++i < 1023)
+					close(i);
+				if (path == NULL)
+					ft_clean_exit(NULL, shell, NULL, NULL);
+				execve(path, tmp->arr, shell->env_arr);
+				ft_clean_exit(NULL, shell, NULL, NULL);
+			}
+		}
 		else
 		{
-			// PARENT PROCESS
+			if (tmp->fd_in != STDIN_FILENO && tmp->fd_in != prev_fd_in)
+			{
+				close(tmp->fd_in);
+				tmp->fd_in = STDIN_FILENO;
+			}
+			if (tmp->fd_out != STDOUT_FILENO)
+			{
+				close(tmp->fd_out);
+				tmp->fd_out = STDOUT_FILENO;
+			}
 
-			// Close previous read end if it's not STDIN and different from current tmp->fd_in
 			if (prev_fd_in != STDIN_FILENO && prev_fd_in != tmp->fd_in)
+			{
 				close(prev_fd_in);
-
-			// Close pipe write end always after fork in parent
+				prev_fd_in = STDIN_FILENO;
+			}
 			if (tmp->next != NULL)
 			{
 				close(pipe_fd[1]);
-
 				if (tmp->next->fd_in == STDIN_FILENO)
 					tmp->next->fd_in = pipe_fd[0];
 				else
 					close(pipe_fd[0]);
 			}
-
-			// Save current input fd for next iteration to close later
 			prev_fd_in = tmp->fd_in;
 		}
-
 		tmp = tmp->next;
 	}
-
-	// After loop: close last prev_fd_in if needed
 	if (prev_fd_in != STDIN_FILENO)
+	{
 		close(prev_fd_in);
-
-	while (wait(&status) > 0)
-		;
-
+		prev_fd_in = STDIN_FILENO;
 	}
+	while (wait(&status) > 0);
+}
+
 
 
 

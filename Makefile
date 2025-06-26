@@ -51,7 +51,7 @@ SRCS = main.c \
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 # Executable name
-NAME = lexer
+NAME = minishell
 
 # Default target
 all: $(NAME)

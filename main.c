@@ -1,14 +1,14 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   main.c                                             :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/06/15 11:16:07 by mzutter           #+#    #+#             */
-// /*   Updated: 2025/06/18 21:51:41 by mzutter          ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/15 11:16:07 by mzutter           #+#    #+#             */
+/*   Updated: 2025/06/26 20:17:14 by mzutter          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 // #include "includes/minishell.h"
 
@@ -105,7 +105,7 @@ static char	*prompt(t_shell *shell)
 	input = readline("minishell>");
 	if (input == NULL)
 	{
-		ft_putstr_fd("Goodbye\n", 2);
+		ft_putstr_fd("Goodbye\n", 2);  //a voir avec les signaux
 		ft_clean_exit(NULL, shell, NULL, NULL);
 	}
 	if (input[0] != '\0')
@@ -201,7 +201,9 @@ void print_str_array(char **arr)
 static void	minishell_loop(t_shell *shell)
 {
 	char	*input;
+	int		i;
 
+	i = 3;
 	while (1)
 	{
 		input = prompt(shell);
@@ -220,12 +222,17 @@ static void	minishell_loop(t_shell *shell)
 		free_list(&shell->token);
 		free_exec_list(&(shell->exec));
 		ft_free_str_array(shell->env_arr);
+		while (i++ < 1023)
+		{
+			close(i);
+		}
 		shell->env_arr = NULL;
 	}
 }
 
 int	main(int argc, char **argv, char **envp)
 {
+	printf("Welcome to minishell\n");
 	t_shell	*shell;
 
 	(void)argc;
