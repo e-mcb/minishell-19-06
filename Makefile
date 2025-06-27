@@ -29,6 +29,7 @@ SRCS = main.c \
 	$(TOKENIZER_DIR)/second_refine.c \
 	$(EXPAND_DIR)/countsegments.c \
 	$(EXPAND_DIR)/expand_cases.c \
+	$(EXPAND_DIR)/expand_cases2.c \
 	$(EXPAND_DIR)/expand.c \
 	$(EXPAND_DIR)/joinexpanded.c \
 	$(EXPAND_DIR)/splitandexpand.c \

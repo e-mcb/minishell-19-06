@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_cases.c                                     :+:      :+:    :+:   */
+/*   expand_cases2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/18 14:29:55 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/27 18:35:17 by mzutter          ###   ########.fr       */
+/*   Created: 2025/06/27 15:35:10 by mzutter           #+#    #+#             */
+/*   Updated: 2025/06/27 18:14:48 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,49 +21,18 @@ static int	ft_isspace(int c)
 	return (0);
 }
 
-static char	*get_env_value(char *name, t_shell *shell)
+void	case_substitute(t_expand *ex, char *input, t_shell *shell)
 {
-	char	*value;
-
-	value = ft_getenv(name, shell);
-	if (!value)
-		return (ft_strdup(""));
-	return (ft_strdup(value));
-}
-
-void	case_only_dollar(t_expand *ex)
-{
-	ex->result[ex->j++] = ft_strdup("$");
-	ex->i++;
-	ex->start = ex->i;
-}
-
-void	case_question_mark(t_expand *ex)
-{
-	char	*value;
-
-	value = ft_strdup("--code retour derniere commande--");
-	ex->result[ex->j++] = value;
-	ex->i += 2;
-	ex->start = ex->i;
-}
-
-
-
-void	case_env_var(t_expand *ex, char *input, t_shell *shell)
-{
-	char	*varname;
-	char	*value;
-
-	ex->i++;
-	ex->start = ex->i;
+	(void) shell;
 	while (input[ex->i] && !ft_isspace(input[ex->i])
 		&& input[ex->i] != '"' && input[ex->i] != '\'' && input[ex->i] != '$'
 		&& (ft_isalnum(input[ex->i]) || input[ex->i] == '_'))
 		ex->i++;
-	varname = strndup_custom(input + ex->start, ex->i - ex->start, shell);
-	value = get_env_value(varname, shell);
-	ex->result[ex->j++] = value;
-	free(varname);
+	ex->result[ex->j + 1] = ft_strndup(input + ex->start + 2, ex->i - ex->start - 2);
+	printf("%s\n", ex->result[ex->j + 1]);
+	ex->j++;
+	// if (!ex->result[ex->j])
+	// 	ft_clean_exit(NULL, shell, NULL, NULL);
+	// printf("%d\n", ex->j);
 	ex->start = ex->i;
 }

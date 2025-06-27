@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:32:53 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 16:46:34 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/27 18:58:24 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,40 @@ int	process_token(t_shell *shell, t_token **tmp, t_token **prev,
 	return (cleanup_token(expanded, splitted), 1);
 }
 
+char *remove_invalid_dollars(const char *input)
+{
+    int i = 0, j = 0;
+    int in_single_quote = 0;
+    size_t len = strlen(input);
+    char *result = malloc(len + 1); // Allocate max possible length
+
+    if (!result)
+        return NULL; // Handle malloc failure as you like
+
+    while (input[i])
+    {
+        if (input[i] == '\'')
+            in_single_quote = !in_single_quote;  // Toggle single quote state
+
+        if (!in_single_quote && input[i] == '$')
+        {
+            // Check if next char is invalid (not letter or '_')
+            char next = input[i + 1];
+            if (next && !isalpha((unsigned char)next) && next != '_')
+            {
+                // Skip both $ and next character
+                i += 2;
+                continue;
+            }
+        }
+
+        // Otherwise copy current character
+        result[j++] = input[i++];
+    }
+    result[j] = '\0';
+
+    return result;
+}
 
 void	expand(t_shell *shell)
 {
@@ -136,6 +170,12 @@ void	expand(t_shell *shell)
 
 	while (tmp)
 	{
+		printf("tmp;%s\n", tmp->value);
+		char	*idk;
+		idk = remove_invalid_dollars(tmp->value);
+		free(tmp->value);
+		tmp->value = idk;
+		printf("tmp:%s\n", tmp->value);
 		skip = process_token(shell, &tmp, &prev, &expanded, &splitted);
 		if (skip)
 			continue;

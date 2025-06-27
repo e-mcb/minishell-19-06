@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:31:47 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/25 22:40:23 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/27 18:05:47 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ int			count_strings(char **arr);
 void		ft_init_var(size_t *i, size_t *count, bool *in_quotes, char *c);
 void		whitespace_to_space(char *str);
 int			ft_strcmp(char *s1, char *s2);
-char		*ft_strndup(const char *s, size_t n);
+char		*ft_strndup(char *s, size_t n);
 
 //misc utils
 void		*ft_realloc(void *ptr, int old_size, int new_size);
@@ -173,7 +173,7 @@ t_token		*create_token(char *str, t_shell *shell);
 int			add_token(t_shell *shell, char *str, t_token_type type, int rank);
 
 //utils de test
-void		ft_print_array(char **str);
+void		print_str_array(char **arr);
 
 //builtins
 void		ft_export(char **str, t_shell *shell, int in_pipeline, int fd_out);
@@ -193,13 +193,14 @@ void		free_exec_list(t_exec **exec);
 
 //expand
 void		expand(t_shell *shell);
-int			ft_count_segments(const char *input);
-char		**split_and_expand(const char *input, t_shell *shell);
+int			ft_count_segments(char *input);
+char		**split_and_expand(char *input, t_shell *shell);
 char		*join_chars(char **str, t_shell *shell);
 void		case_only_dollar(t_expand *ex);
 void		case_question_mark(t_expand *ex);
-void		case_env_var(t_expand *ex, const char *input, t_shell *shell);
+void		case_env_var(t_expand *ex, char *input, t_shell *shell);
 t_token		*skip_to_pipe(t_token *token);
+void		case_substitute(t_expand *ex, char *input, t_shell *shell);
 
 //tmp
 char		**split_keep_separators(const char *s, bool (*is_sep)(char), t_shell *shell);

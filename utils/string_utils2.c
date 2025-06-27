@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:04:22 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/15 14:36:43 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/27 18:05:21 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	ft_strcmp(char *s1, char *s2)
 	return (0);
 }
 
-char	*ft_strndup(const char *s, size_t n)
+char	*ft_strndup(char *s, size_t n)
 {
 	size_t	i;
 	char	*copy;
