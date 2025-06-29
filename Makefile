@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -Iheaders -Ilibft
+CFLAGS = -Wall -Wextra -Werror -Iheaders -Ilibft -g
 LDFLAGS = -lreadline
 
 # Directories
@@ -23,6 +23,8 @@ SRCS = main.c \
 	$(UTILS_DIR)/split_with_sep.c \
 	$(UTILS_DIR)/env_utils.c \
 	$(UTILS_DIR)/env_utils2.c \
+	$(UTILS_DIR)/exec_utils1.c \
+	$(UTILS_DIR)/exec_utils2.c \
 	$(TOKENIZER_DIR)/tokenizer.c \
 	$(TOKENIZER_DIR)/split2.c \
 	$(TOKENIZER_DIR)/refine_token.c \
@@ -42,11 +44,11 @@ SRCS = main.c \
 	$(BUILTIN_DIR)/ft_pwd.c \
 	$(BUILTIN_DIR)/ft_unset.c \
 	$(EXEC_DIR)/exec_to_sort.c \
-	$(EXEC_DIR)/executing.c \
 	$(EXEC_DIR)/pathfinder.c \
 	$(EXEC_DIR)/prep_exec.c \
 	$(EXEC_DIR)/redirs.c \
 	$(EXEC_DIR)/heredocs.c \
+	$(EXEC_DIR)/executing.c \
 
 # Create list of object files in the objects/ dir
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

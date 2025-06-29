@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 16:16:08 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/25 22:37:27 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:06:23 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static char	*construct_final_path(char *path, char *cmd)
 		return (NULL);
 	tmp_path = ft_strjoin(path, "/");
 	final_path = ft_strjoin(tmp_path, cmd);
-	// ft_putstr_fd(final_path, 0); // c'etait pour quoi ca??????????
 	free(tmp_path);
 	return (final_path);
 }

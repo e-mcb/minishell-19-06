@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 17:12:13 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 22:15:14 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:04:48 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,4 @@ void	second_refine_token_type(t_token *token)
 			t->type = ARG;
 		t = t->next;
 	}
-
 }

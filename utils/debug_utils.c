@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:07:58 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/27 15:08:13 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:04:16 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	print_str_array(char **arr)
 {
-    int i = 0;
+	int	i;
 
-    if (!arr)
-        return;
-
-    while (arr[i])
-    {
-        printf("[%d]: %s\n", i, arr[i]);
-        i++;
-    }
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
+	{
+		printf("[%d]: %s\n", i, arr[i]);
+		i++;
+	}
 }

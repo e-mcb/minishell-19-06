@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:46:44 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/15 14:41:50 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:03:21 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	ft_sort_env_list(t_envvar *head)
 
 int	envvar_match(char *env_var, char *var, size_t len, char *full_var)
 {
-	return (ft_strncmp(env_var, full_var, len) == 0 
+	return (ft_strncmp(env_var, full_var, len) == 0
 		|| ft_strcmp(env_var, var) == 0);
 }
 

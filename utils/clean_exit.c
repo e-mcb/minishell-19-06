@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 21:18:02 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/26 01:36:10 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:04:27 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void	free_exec_list(t_exec **exec)
 	}
 	*exec = NULL;
 }
-
 
 void	ft_clean_exit(char *input, t_shell *shell,
 	char *str_to_free, char **arr_to_free)

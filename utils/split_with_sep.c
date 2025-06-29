@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:49:00 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 16:41:54 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:02:59 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ char	**chunk_handl(char **res, size_t *count_ptr,
 	return (res);
 }
 
-char	**split_keep_separators(const char *s, bool (*is_sep)(char), t_shell *shell)
+char	**split_keep_separators(const char *s,
+	bool (*is_sep)(char), t_shell *shell)
 {
 	char		**res;
 	t_splitter	splitter;

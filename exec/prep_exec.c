@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 19:46:35 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 23:15:44 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:06:08 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,4 @@ void	env_list_to_arr(t_shell *shell)
 		tmp = tmp->next;
 	}
 	shell->env_arr[i] = NULL;
-	
 }
-
-

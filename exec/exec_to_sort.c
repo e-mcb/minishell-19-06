@@ -6,19 +6,19 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:39:57 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/26 01:04:11 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:25:48 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_exec *init_exec(void)
+t_exec	*init_exec(void)
 {
-	t_exec *exec;
-	
+	t_exec	*exec;
+
 	exec = malloc(sizeof(t_exec));
 	if (!exec)
-		return NULL;
+		return (NULL);
 	exec->arr = NULL;
 	exec->fd_in = 0;
 	exec->fd_out = 1;
@@ -49,16 +49,19 @@ t_exec	*new_node(t_exec *head)
 t_token	*skip_to_pipe(t_token *token)
 {
 	char	*line;
+	int		len;
 
 	while (token->type != PIPE || token != NULL)
 	{
+		len = ft_strlen(token->value);
 		if (token->type == HDOC)
 		{
 			while (1)
 			{
 				write(1, ">", 1);
 				line = get_next_line(0);
-				if ((ft_strncmp(line, token->next->value, ft_strlen(token->value)) == 0) || (token->next->value[0] == 0 && line[0] == '\n'))
+				if ((ft_strncmp(line, token->next->value, len) == 0)
+					|| (token->next->value[0] == 0 && line[0] == '\n'))
 				{
 					free(line);
 					token = token->next;
@@ -123,7 +126,7 @@ void	create_exec(t_shell *shell)
 			last = last->next;
 			last->heredoc = heredoc;
 		}
-		if (is_redir(tmp))
+		if (is_redir(tmp) || tmp->type == HDOC)
 			tmp = handle_redir(last, tmp);
 		if (tmp->type == ARG || tmp->type == CMD)
 			last->arr = add_string_to_array(last->arr, tmp->value);

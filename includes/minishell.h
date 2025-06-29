@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:31:47 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/27 18:05:47 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 21:59:17 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,5 +211,16 @@ void		exec_loop(t_shell *shell);
 char		*do_heredoc(t_token *token);
 t_token		*handle_redir(t_exec *exec, t_token *tmp);
 void		create_exec(t_shell *shell);
+void		execute_command(t_shell *shell, t_exec *tmp);
+pid_t		safe_fork(t_shell *shell);
+int			safe_pipe(int *pipe_fd, t_shell *shell);
+int			is_valid_command(t_exec *tmp);
+void		handle_child_process(t_shell *shell, t_exec *tmp, int *pipe_fd);
+int			ft_is_builtin(char *str);
+void		call_builtin(t_shell *shell, t_exec *cur_exec, char *cmd);
+void		handle_builtin(t_shell *shell, t_exec *tmp);
+void		setup_redirection(t_exec *tmp, int *pipe_fd, t_shell *shell);
+void		handle_heredoc_input(t_exec *tmp, int *pipe_fd);
+int			ft_execsize(t_exec *exec);
 
 #endif

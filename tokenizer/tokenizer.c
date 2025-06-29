@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 15:14:08 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/18 22:33:13 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:04:40 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	handle_word_boundaries(int i, t_quote_state *state,
 	{
 		tmp = ft_substrword(ctx->str, state->w_start, i, shell);
 		if (tmp == NULL)
-			ft_clean_exit(NULL, shell, NULL, NULL); 
+			ft_clean_exit(NULL, shell, NULL, NULL);
 		checker = add_token(shell, tmp, WORD, ctx->rank);
 		if (checker == 1)
 			ft_clean_exit(tmp, shell, NULL, NULL);
@@ -97,7 +97,7 @@ static bool	handle_double_operator(int i, t_shell *shell, t_input_context *ctx)
 			checker = add_token(shell, tmp, HDOC, ctx->rank);
 		if (checker == 1)
 			ft_clean_exit(tmp, shell, NULL, NULL);
-		else
+		else if (ctx->str[i] == '>')
 			checker = add_token(shell, tmp, APPEND, ctx->rank);
 		if (checker == 1)
 			ft_clean_exit(tmp, shell, NULL, NULL);

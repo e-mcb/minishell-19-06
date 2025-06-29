@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 11:16:07 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/27 15:18:13 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/29 22:23:29 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*prompt(t_shell *shell)
 		if (input[0] == 0)
 		{
 			free(input);
-			continue;
+			continue ;
 		}
 		if (ft_has_invalid_quotes(input))
 		{
@@ -79,6 +79,48 @@ static void	ft_parsing(char *input, t_shell *shell)
 	second_refine_token_type(shell->token);
 	shell->splitted = NULL;
 }
+
+// static void	ft_parsing(char *input, t_shell *shell)
+// {
+// 	int		i;
+// 	t_token	*tmp;
+// 	// int		j = 0;
+
+// 	i = 0;
+// 	whitespace_to_space(input);
+// 	shell->splitted = ft_split2(input, ' ');
+// 	if (shell->splitted == NULL)
+// 		ft_clean_exit(input, shell, NULL, NULL);
+// 	free (input);
+// 	while (shell->splitted[i])
+// 	{
+// 		tokenizer(shell, i);
+// 		printf("test:%s\n", shell->splitted[i]);
+// 		i++;
+// 	}
+// 	// tmp = shell->token;
+// 	if (shell->splitted != NULL)
+// 		ft_free_str_array(shell->splitted);
+// 	// tmp = shell->token;
+// 	// printf("idiot\n");
+// 	refine_token_type(shell->token);
+// 	// while (tmp)
+// 	// {
+// 	// 	printf("tmp before expand:%s\ntype before expand:%d\n, iter number:%d\n", shell->token->value, shell->token->type, j);
+// 	// 	tmp = tmp->next;
+// 	// 	j++;
+// 	// }
+// 	expand(shell);
+// 	tmp = shell->token;
+// 	printf("final token chain:\n");
+// 	while (tmp)
+// 	{
+// 		printf("VALUE: %s\nTYPE: %d\n", tmp->value, tmp->type);
+// 		tmp = tmp->next;
+// 	}
+// 	second_refine_token_type(shell->token);
+// 	shell->splitted = NULL;
+// }
 
 static void	minishell_loop(t_shell *shell)
 {
