@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:32:53 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/29 20:31:09 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 23:09:17 by sradosav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_token	*new_token_append(t_token *head, char *str, t_token_type type, t_shell *shell)
+t_token	*new_token_append(t_token *head, char *str,
+	t_token_type type, t_shell *shell)
 {
 	t_token	*new_node;
 	t_token	*last;
@@ -88,12 +89,11 @@ void	cleanup_token(char **expanded, char ***splitted)
 	}
 }
 
-
 int	process_token(t_shell *shell, t_token **tmp, t_token **prev,
 			char **expanded, char ***splitted)
 {
 	if (!ft_strchr((*tmp)->value, '$'))
-		return 0;
+		return (0);
 	*expanded = join_chars(split_and_expand((*tmp)->value, shell), shell);
 	if (*expanded && (*expanded)[0] != 0)
 	{
@@ -154,27 +154,19 @@ int	process_token(t_shell *shell, t_token **tmp, t_token **prev,
 
 void	expand(t_shell *shell)
 {
-	t_token *tmp;
-	t_token *prev;
-	char *expanded;
-	char **splitted;
-	int skip;
-
-	// CHECK A FAIRE ICI J'AI FAIT DE LA :ERDE
+	t_token	*tmp;
+	t_token	*prev;
+	char	*expanded;
+	char	**splitted;
+	int		skip;
 
 	tmp = shell->token;
 	prev = NULL;
 	expanded = NULL;
 	splitted = NULL;
 	skip = 0;
-
 	while (tmp)
 	{
-		// printf("tmp;%s\n", tmp->value);
-		// char	*idk;
-		// idk = remove_invalid_dollars(tmp->value);
-		// free(tmp->value);
-		// tmp->value = idk;
 		skip = process_token(shell, &tmp, &prev, &expanded, &splitted);
 		if (skip)
 			continue;

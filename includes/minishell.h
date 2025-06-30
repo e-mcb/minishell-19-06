@@ -6,7 +6,7 @@
 /*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:31:47 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/30 22:25:11 by sradosav         ###   ########.fr       */
+/*   Updated: 2025/06/30 23:12:04 by sradosav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,6 @@ void		case_only_dollar(t_expand *ex);
 void		case_question_mark(t_expand *ex, t_shell *shell);
 void		case_env_var(t_expand *ex, char *input, t_shell *shell);
 t_token		*skip_to_pipe(t_token *token);
-void		case_substitute(t_expand *ex, char *input, t_shell *shell);
 
 //tmp
 char		**split_keep_separators(const char *s, bool (*is_sep)(char),
