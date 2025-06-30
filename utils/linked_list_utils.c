@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   linked_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:43:06 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/23 16:48:10 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 23:45:49 by sradosav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,35 @@ int	add_token(t_shell *shell, char *str, t_token_type type, int rank)
 		current_token = current_token->next;
 	current_token->next = new_token;
 	return (0);
+}
+
+void	cleanup_token(char **expanded, char ***splitted)
+{
+	if (*splitted)
+	{
+		ft_free_str_array(*splitted);
+		*splitted = NULL;
+	}
+	if (*expanded)
+	{
+		free(*expanded);
+		*expanded = NULL;
+	}
+}
+
+t_token	*new_token_append(t_token *head, char *str,
+	t_token_type type, t_shell *shell)
+{
+	t_token	*new_node;
+	t_token	*last;
+
+	new_node = create_token(str, shell);
+	new_node->type = type;
+	if (!head)
+		return (new_node);
+	last = head;
+	while (last->next)
+		last = last->next;
+	last->next = new_node;
+	return (head);
 }

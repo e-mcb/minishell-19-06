@@ -6,7 +6,7 @@
 /*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:31:47 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/30 23:12:04 by sradosav         ###   ########.fr       */
+/*   Updated: 2025/06/30 23:47:27 by sradosav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,9 @@ void		second_refine_token_type(t_token *token);
 //linked_list_utils functions
 t_token		*create_token(char *str, t_shell *shell);
 int			add_token(t_shell *shell, char *str, t_token_type type, int rank);
+void		cleanup_token(char **expanded, char ***splitted);
+t_token		*new_token_append(t_token *head, char *str,
+				t_token_type type, t_shell *shell);
 
 //utils de test
 void		print_str_array(char **arr);

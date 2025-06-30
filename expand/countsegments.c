@@ -6,7 +6,7 @@
 /*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 14:35:14 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/30 22:09:13 by sradosav         ###   ########.fr       */
+/*   Updated: 2025/06/30 23:42:38 by sradosav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,3 +80,35 @@ int	ft_count_segments(char *input)
 		ex.count++;
 	return (ex.count);
 }
+
+// int	ft_count_segments(char *input)
+// {
+// 	t_expand	ex;
+
+// 	ex.i = 0;
+// 	ex.j = 0;
+// 	ex.count = 0;
+// 	ex.start = 0;
+// 	ex.in_single_quote = 0;
+// 	ex.in_double_quote = 0;
+// 	ex.result = NULL;
+// 	while (input[ex.i])
+// 	{
+// 		if (input[ex.i] == '\'' && !ex.in_double_quote)
+// 			process_single_quote(&ex);
+// 		else if (input[ex.i] == '"' && !ex.in_single_quote)
+// 			process_double_quote(&ex);
+// 		else if (input[ex.i] == '$' && !ex.in_single_quote)
+// 		{
+// 			if (input[ex.i + 1] && ft_isdigit(input[ex.i + 1]))
+// 				process_dollar_with_digit(&ex);
+// 			else
+// 				process_dollar(input, &ex);
+// 		}
+// 		else
+// 			ex.i++;
+// 	}
+// 	if (ex.i > ex.start)
+// 		ex.count++;
+// 	return (ex.count);
+// }
