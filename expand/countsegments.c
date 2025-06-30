@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   countsegments.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 14:35:14 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/27 16:55:19 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 22:09:13 by sradosav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ static void	process_dollar(char *input, t_expand *ex)
 	ex->start = ex->i;
 }
 
+static void	process_dollar_with_digit(t_expand *ex)
+{
+	if (ex->i > ex->start)
+		ex->count++;
+	ex->i += 2;
+	ex->start = ex->i;
+}
+
 int	ft_count_segments(char *input)
 {
 	t_expand	ex;
@@ -59,7 +67,12 @@ int	ft_count_segments(char *input)
 		else if (input[ex.i] == '"' && !ex.in_single_quote)
 			process_double_quote(&ex);
 		else if (input[ex.i] == '$' && !ex.in_single_quote)
-			process_dollar(input, &ex);
+		{
+			if (input[ex.i + 1] && ft_isdigit(input[ex.i + 1]))
+				process_dollar_with_digit(&ex);
+			else
+				process_dollar(input, &ex);
+		}
 		else
 			ex.i++;
 	}

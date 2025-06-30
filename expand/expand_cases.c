@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_cases.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 14:29:55 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/27 18:35:17 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 22:30:39 by sradosav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,16 @@ void	case_only_dollar(t_expand *ex)
 	ex->start = ex->i;
 }
 
-void	case_question_mark(t_expand *ex)
+void	case_question_mark(t_expand *ex, t_shell *shell)
 {
 	char	*value;
+	char	*alpha;
 
-	value = ft_strdup("--code retour derniere commande--");
+	alpha = ft_itoa(shell->exit_status);
+	value = ft_strdup(alpha);
+	if (!value)
+		ft_clean_exit(NULL, shell, NULL, NULL);
+	free(alpha);
 	ex->result[ex->j++] = value;
 	ex->i += 2;
 	ex->start = ex->i;

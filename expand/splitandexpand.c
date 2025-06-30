@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitandexpand.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sradosav <sradosav@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 14:20:51 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/27 18:56:49 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 22:23:53 by sradosav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,21 @@ static void	process_double_quote(const char *input, t_expand *ex, t_shell *shell
 static void	process_dollar(char *input, t_expand *ex, t_shell *shell)
 {
 	if (ex->i > ex->start)
+	{
 		ex->result[ex->j++] = strndup_custom(input + ex->start,
 				ex->i - ex->start, shell);
+		ex->start = ex->i;
+	}		
 	else if (input[ex->i + 1] == ' '
 		|| input[ex->i + 1] == '\0')
 		case_only_dollar(ex);
 	else if (input[ex->i + 1] == '?')
-		case_question_mark(ex);
-	// else if (!ft_isalpha(input[ex->i + 1]))
-	// 	case_substitute(ex, input, shell);
+		case_question_mark(ex, shell);
+	else if (ft_isdigit(input[ex->i + 1]))
+	{
+		ex->i += 2 ;
+		ex->start = ex->i;
+	}
 	else
 		case_env_var(ex, input, shell);
 }
