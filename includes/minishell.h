@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:31:47 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/29 21:59:17 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 19:09:35 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,8 @@ t_envvar	*ft_env_to_list(char **envp, t_shell *shell);
 t_envvar	*copy_env_list(t_envvar *env, t_shell *shell);
 void		ft_sort_env_list(t_envvar *head);
 void		free_env_list(t_envvar **head);
-int			add_env_var(t_envvar **head, char *str, int exported, t_shell *shell);
+int			add_env_var(t_envvar **head, char *str, int exported,
+				t_shell *shell);
 void		free_env_list(t_envvar **head);
 void		env_list_to_arr(t_shell *shell);
 int			envvar_match(char *env_var, char *var, size_t len, char *full_var);
@@ -203,7 +204,8 @@ t_token		*skip_to_pipe(t_token *token);
 void		case_substitute(t_expand *ex, char *input, t_shell *shell);
 
 //tmp
-char		**split_keep_separators(const char *s, bool (*is_sep)(char), t_shell *shell);
+char		**split_keep_separators(const char *s, bool (*is_sep)(char),
+				t_shell *shell);
 
 //exec
 char		*pathfinder(t_shell *shell, t_exec *current);

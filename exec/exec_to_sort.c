@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:39:57 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/29 22:25:48 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 18:54:27 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_token	*skip_to_pipe(t_token *token)
 	return (token);
 }
 
-char	**add_string_to_array(char **array, char *str)
+char	**add_string_to_array(char **array, char *str, t_shell *shell)
 {
 	int		i;
 	int		j;
@@ -87,8 +87,7 @@ char	**add_string_to_array(char **array, char *str)
 		i++;
 	new_array = malloc((i + 2) * sizeof(char *));
 	if (!new_array)
-		return (NULL);
-		// VOIR CE QU ON FAIT SI CA FOIRE
+		ft_clean_exit(NULL, shell, NULL, new_array);
 	while (j < i)
 	{
 		new_array[j] = ft_strdup(array[j]);
@@ -97,11 +96,7 @@ char	**add_string_to_array(char **array, char *str)
 	}
 	new_array[i] = ft_strdup(str);
 	if (!new_array[i])
-	{
-		free(new_array);
-		return (NULL);
-		// VOIR CE QU ON FAIT SI CA FOIRE
-	}
+		ft_clean_exit(NULL, shell, NULL, new_array);
 	new_array[i + 1] = NULL;
 	free(array);
 	return (new_array);
@@ -129,7 +124,7 @@ void	create_exec(t_shell *shell)
 		if (is_redir(tmp) || tmp->type == HDOC)
 			tmp = handle_redir(last, tmp);
 		if (tmp->type == ARG || tmp->type == CMD)
-			last->arr = add_string_to_array(last->arr, tmp->value);
+			last->arr = add_string_to_array(last->arr, tmp->value, shell);
 		tmp = tmp->next;
 	}
 	shell->exec = exec;

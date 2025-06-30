@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 23:19:50 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/29 22:05:32 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 19:15:23 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ int	string_error(char *input)
 	{
 		ft_putstr_fd(PIPE_FIRST_LAST, 2);
 		return (1);
+	}
+	while (input[i++])
+	{
+		
 	}
 	// what to add?
 }

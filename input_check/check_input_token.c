@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 23:29:25 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/29 22:05:17 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 19:16:36 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	token_error(t_shell *shell)
 		if ((tmp->type == IN || tmp->type == APPEND
 				|| tmp->type == HDOC) && tmp->next->type == PIPE)
 			return (ft_putstr_fd("syntax error near token '|'", 2), 1);
+		if ((tmp->type == IN || tmp->type == APPEND
+				|| tmp->type == HDOC || tmp->t)
 		tmp = tmp->next;
 	}
 }

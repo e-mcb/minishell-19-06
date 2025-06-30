@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:45:52 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/29 22:20:26 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 19:30:04 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,47 @@
 //     }
 // }
 
+// static int	ft_strcmp_heredoc(char *s1, char *s2)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (s1[i] || s2[i])
+// 	{
+// 		if (s1[i] != s2[i])
+// 			return (s1[i] - s2[i]);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+// char	*do_heredoc(t_token *token)
+// {
+// 	char	*finale;
+// 	char	*tmp;
+// 	char	*line;
+
+// 	finale = NULL;
+// 	tmp = NULL;
+// 	line = NULL;
+// 	while (1)
+// 	{
+// 		write(STDOUT_FILENO, ">", 1);
+// 		line = get_next_line(STDIN_FILENO);
+// 		if ((token->value[0] == 0 && line[0] == '\n') || !line
+// 			|| ft_strncmp(line, token->value, ft_strlen(token->value)) == 0) //error, finds eof in "eofsomethingelse"
+// 			return (free(line), finale);
+// 		if (finale)
+// 			finale = ft_strjoin(finale, line);
+// 		else
+// 			finale = ft_strdup(line);
+// 		if (tmp)
+// 			free (tmp);
+// 		free (line);
+// 		tmp = finale;
+// 	}
+// }
+
 char	*do_heredoc(t_token *token)
 {
 	char	*finale;
@@ -87,14 +128,14 @@ char	*do_heredoc(t_token *token)
 		write(STDOUT_FILENO, ">", 1);
 		line = get_next_line(STDIN_FILENO);
 		if ((token->value[0] == 0 && line[0] == '\n') || !line
-			|| ft_strncmp(line, token->value, ft_strlen(token->value)) == 0) //error, finds eof in "eofsomethingelse"
+			|| !ft_strcmp(line, token->value)) //error, finds eof in "eofsomethingelse"
 			return (free(line), finale);
 		if (finale)
 			finale = ft_strjoin(finale, line);
 		else
 			finale = ft_strdup(line);
 		if (tmp)
-			free (tmp);	
+			free (tmp);
 		free (line);
 		tmp = finale;
 	}
