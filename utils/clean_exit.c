@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 21:18:02 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/29 22:04:27 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 23:01:59 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,21 @@ void	ft_free_str_array(char **arr)
 	free(arr);
 }
 
+void	ft_free_str_array_exec(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i] != NULL)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
 // void	ft_free_str_array(char **arr)
 // {
 // 	int	i;
@@ -68,7 +83,7 @@ void	free_exec_list(t_exec **exec)
 	{
 		next = (*exec)->next;
 		if ((*exec)->arr)
-			ft_free_str_array((*exec)->arr);
+			ft_free_str_array_exec((*exec)->arr);
 		if ((*exec)->heredoc)
 			free((*exec)->heredoc);
 		if ((*exec)->fd_in != STDIN_FILENO && (*exec)->fd_in > -1)

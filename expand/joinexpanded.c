@@ -6,11 +6,26 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 14:27:36 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/18 22:04:35 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 23:00:36 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static void	ft_free_str_array_join(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i] != NULL)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
 
 int	array_len(char **str)
 {
@@ -53,5 +68,5 @@ char	*join_chars(char **str, t_shell *shell)
 		i++;
 	}
 	expanded[k] = '\0';
-	return (ft_free_str_array(str), expanded);
+	return (ft_free_str_array_join(str), expanded);
 }

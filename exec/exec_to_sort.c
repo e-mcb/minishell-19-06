@@ -6,7 +6,7 @@
 /*   By: mzutter <mzutter@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 22:39:57 by mzutter           #+#    #+#             */
-/*   Updated: 2025/06/30 18:54:27 by mzutter          ###   ########.fr       */
+/*   Updated: 2025/06/30 22:50:24 by mzutter          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,17 @@ t_exec	*new_node(t_exec *head)
 t_token	*skip_to_pipe(t_token *token)
 {
 	char	*line;
-	int		len;
 
-	while (token->type != PIPE || token != NULL)
+	while (token != NULL && token->type != PIPE)
 	{
-		len = ft_strlen(token->value);
 		if (token->type == HDOC)
 		{
 			while (1)
 			{
 				write(1, ">", 1);
 				line = get_next_line(0);
-				if ((ft_strncmp(line, token->next->value, len) == 0)
-					|| (token->next->value[0] == 0 && line[0] == '\n'))
+				if ((token->value[0] == 0 && line[0] == '\n') || !line
+					|| !ft_strcmp(ft_strtrim(line, "\n"), token->value))
 				{
 					free(line);
 					token = token->next;
@@ -122,7 +120,11 @@ void	create_exec(t_shell *shell)
 			last->heredoc = heredoc;
 		}
 		if (is_redir(tmp) || tmp->type == HDOC)
-			tmp = handle_redir(last, tmp);
+			{
+				tmp = handle_redir(last, tmp);
+				if (!tmp)
+					break ;
+			}
 		if (tmp->type == ARG || tmp->type == CMD)
 			last->arr = add_string_to_array(last->arr, tmp->value, shell);
 		tmp = tmp->next;
