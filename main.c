@@ -12,6 +12,28 @@
 
 #include "includes/minishell.h"
 
+int	g_status = 0;
+
+void sigint_handler(int sig)
+{
+    (void)sig;
+    if (g_status == 0)
+    {
+        write(1, "\n", 1);
+        rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
+    }
+    else if (g_status == 1)
+    {
+        write(1, "\n", 1);
+		g_status = -1;
+        // close(fd) + exit(130);
+    }
+    // Pour  commande bloquante, on fait rien
+    // le fils recevra SIGINT naturellement.
+}
+
 static char	*prompt(t_shell *shell)
 {
 	char	*input;
@@ -108,6 +130,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
 
+	signal(SIGINT, sigint_handler);
+    signal(SIGQUIT, SIG_IGN); 
 	printf("Welcome to minishell\n");
 	(void)argc;
 	(void)argv;

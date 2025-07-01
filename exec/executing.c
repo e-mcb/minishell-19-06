@@ -53,11 +53,35 @@ void	close_parent_fds(t_exec *tmp, int *pipe_fd, int *prev_fd_in)
 	*prev_fd_in = tmp->fd_in;
 }
 
-void	wait_for_children_to_exit(void)
+void	wait_for_children_to_exit(t_shell *shell)
 {
 	int	status;
 	//comment check pour le bon pid?
-	while (wait(&status) > 0);
+	while (wait(&status) > 0)
+	{
+		if (WIFSIGNALED(status))
+		{
+			int sig = WTERMSIG(status);
+			if (sig == SIGQUIT)
+			{
+				write(1, "Quit (core dumped)\n", 19);
+				if (shell->token)
+					free_list(&(shell->token));
+				if (shell->exec)
+					free_exec_list(&(shell->exec));
+				shell->exit_status = 130;
+			}
+			if (sig == SIGINT)
+			{
+				write(1, "\n", 1);
+				if (shell->token)
+					free_list(&(shell->token));
+				if (shell->exec)
+					free_exec_list(&(shell->exec));
+				shell->exit_status = 130;
+			}
+		}
+	};
 }
 
 void	exec_loop(t_shell *shell)
@@ -83,14 +107,20 @@ void	exec_loop(t_shell *shell)
 		}
 		if (tmp->next != NULL)
 			safe_pipe(pipe_fd, shell);
+		g_status = 2;
 		pid = safe_fork(shell);
 		if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
+    		signal(SIGQUIT, SIG_DFL);
 			handle_child_process(shell, tmp, pipe_fd);
+		}
 		else
 			close_parent_fds(tmp, pipe_fd, &prev_fd_in);
 		tmp = tmp->next;
 	}
 	if (prev_fd_in != STDIN_FILENO)
 		close(prev_fd_in);
-	wait_for_children_to_exit();
+	wait_for_children_to_exit(shell);
+	g_status = 0;
 }

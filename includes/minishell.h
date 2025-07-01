@@ -38,6 +38,8 @@
 # define NOCLOBBER "noclobber not accounted for in minishell\n\
 						syntax error near token pair '>|'"
 
+extern int g_status;
+
 typedef enum e_token_type
 {
 	WORD, //0
