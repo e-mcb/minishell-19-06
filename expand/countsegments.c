@@ -34,19 +34,20 @@ static void	process_dollar(char *input, t_expand *ex)
 {
 	if (ex->i > ex->start)
 		ex->count++;
-	ex->i++;
-	while (input[ex->i] && (ft_isalnum(input[ex->i]) || input[ex->i] == '_'))
+	if (input[ex->i + 1] && ft_isdigit(input[ex->i + 1]))
+	{
+		ex->i += 2;
+		ex->start = ex->i;
+	}
+	else
+	{
 		ex->i++;
-	ex->count++;
-	ex->start = ex->i;
-}
-
-static void	process_dollar_with_digit(t_expand *ex)
-{
-	if (ex->i > ex->start)
+		while (input[ex->i]
+			&& (ft_isalnum(input[ex->i]) || input[ex->i] == '_'))
+			ex->i++;
 		ex->count++;
-	ex->i += 2;
-	ex->start = ex->i;
+		ex->start = ex->i;
+	}
 }
 
 int	ft_count_segments(char *input)
@@ -67,12 +68,7 @@ int	ft_count_segments(char *input)
 		else if (input[ex.i] == '"' && !ex.in_single_quote)
 			process_double_quote(&ex);
 		else if (input[ex.i] == '$' && !ex.in_single_quote)
-		{
-			if (input[ex.i + 1] && ft_isdigit(input[ex.i + 1]))
-				process_dollar_with_digit(&ex);
-			else
-				process_dollar(input, &ex);
-		}
+			process_dollar(input, &ex);
 		else
 			ex.i++;
 	}
@@ -80,35 +76,3 @@ int	ft_count_segments(char *input)
 		ex.count++;
 	return (ex.count);
 }
-
-// int	ft_count_segments(char *input)
-// {
-// 	t_expand	ex;
-
-// 	ex.i = 0;
-// 	ex.j = 0;
-// 	ex.count = 0;
-// 	ex.start = 0;
-// 	ex.in_single_quote = 0;
-// 	ex.in_double_quote = 0;
-// 	ex.result = NULL;
-// 	while (input[ex.i])
-// 	{
-// 		if (input[ex.i] == '\'' && !ex.in_double_quote)
-// 			process_single_quote(&ex);
-// 		else if (input[ex.i] == '"' && !ex.in_single_quote)
-// 			process_double_quote(&ex);
-// 		else if (input[ex.i] == '$' && !ex.in_single_quote)
-// 		{
-// 			if (input[ex.i + 1] && ft_isdigit(input[ex.i + 1]))
-// 				process_dollar_with_digit(&ex);
-// 			else
-// 				process_dollar(input, &ex);
-// 		}
-// 		else
-// 			ex.i++;
-// 	}
-// 	if (ex.i > ex.start)
-// 		ex.count++;
-// 	return (ex.count);
-// }
